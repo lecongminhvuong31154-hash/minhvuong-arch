@@ -1,16 +1,49 @@
 const menu = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".site-header nav");
-if (menu && nav) menu.addEventListener("click", () => nav.classList.toggle("open"));
+
+if (menu && nav) {
+    menu.addEventListener("click", () => {
+        nav.classList.toggle("open");
+    });
+}
+
+
+// ================================
+// LỌC CÔNG TRÌNH
+// ================================
 
 document.querySelectorAll(".filter").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    const filter = btn.dataset.filter;
-    document.querySelectorAll(".portfolio-card").forEach(card => {
-      card.style.display = filter === "all" || card.dataset.category === filter ? "" : "none";
+
+    btn.addEventListener("click", () => {
+
+        // Xóa active ở tất cả nút
+        document.querySelectorAll(".filter").forEach(b => {
+            b.classList.remove("active");
+        });
+
+        // Thêm active cho nút đang chọn
+        btn.classList.add("active");
+
+        // Lấy loại đang chọn
+        const filter = btn.dataset.filter;
+
+        // Hiển thị / ẩn công trình
+        document.querySelectorAll(".portfolio-card").forEach(card => {
+
+            if (
+                filter === "all" ||
+                card.dataset.category === filter
+            ) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+
     });
-  });
+
+});
 /* =====================================================
    INDEX PAGE - SCROLL IMAGE REVEAL
    ẢNH CHỈ HIỆN KHI LƯỚT XUỐNG
