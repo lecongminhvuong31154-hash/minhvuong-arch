@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Đồ án kiến trúc - Thiết kế nhà ở biệt thự"
+  >
+
+  <title>Đồ án 01 — Thiết kế nhà ở biệt thự</title>
+
+  <!-- GOOGLE FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- CSS CHÍNH -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- CSS RIÊNG CHO TRANG ĐỒ ÁN -->
+  <style>
+
+    /* =========================================
+       ACADEMIC DETAIL
+    ========================================= */
+
+    .academic-detail {
+      padding-top: clamp(100px, 12vw, 160px);
+      padding-bottom: 120px;
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
+    .academic-detail-header {
+      width: min(1000px, 88%);
+      margin: 0 auto;
+
+      text-align: center;
+    }
+
+    .academic-detail-number {
+      margin: 0 0 22px;
+
+      font-size: 0.7rem;
+
+      letter-spacing: 0.18em;
+
+      text-transform: uppercase;
+
+      opacity: 0.55;
+    }
+
+    .academic-detail-header h1 {
+      margin: 0;
+
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(3rem, 7vw, 7rem);
+
+      font-weight: 400;
+
+      line-height: 1.05;
+
+      letter-spacing: -0.035em;
+    }
+
+    .academic-detail-subtitle {
+      max-width: 650px;
+
+      margin: 28px auto 0;
+
+      font-size: 0.95rem;
+
+      line-height: 1.8;
+
+      opacity: 0.65;
+    }
+
+
+    /* =========================================
+       THÔNG TIN ĐỒ ÁN
+    ========================================= */
+
+    .academic-detail-info {
+      width: min(1000px, 88%);
+
+      margin: 70px auto 0;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 30px;
+
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+      padding: 25px 0;
+    }
+
+    .academic-info-item span {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 0.62rem;
+
+      letter-spacing: 0.15em;
+
+      text-transform: uppercase;
+
+      opacity: 0.5;
+    }
+
+    .academic-info-item strong {
+      font-size: 0.9rem;
+
+      font-weight: 400;
+    }
+
+
+    /* =========================================
+       ẢNH HERO
+    ========================================= */
+
+    .academic-cover {
+      width: min(1250px, 92%);
+
+      margin: 90px auto 0;
+
+      overflow: hidden;
+    }
+
+    .academic-cover img {
+      width: 100%;
+
+      display: block;
+
+      height: auto;
+
+      object-fit: cover;
+    }
+
+
+    /* =========================================
+       SECTION
+    ========================================= */
+
+    .academic-content {
+      width: min(1050px, 88%);
+
+      margin: 120px auto 0;
+    }
+
+    .academic-section {
+      margin-bottom: 130px;
+    }
+
+    .academic-section-heading {
+      display: grid;
+
+      grid-template-columns:
+        180px 1fr;
+
+      gap: 40px;
+
+      margin-bottom: 45px;
+
+      align-items: start;
+    }
+
+    .academic-section-number {
+      margin: 0;
+
+      font-size: 0.65rem;
+
+      letter-spacing: 0.15em;
+
+      text-transform: uppercase;
+
+      opacity: 0.5;
+    }
+
+    .academic-section-heading h2 {
+      margin: 0;
+
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(2rem, 4vw, 4rem);
+
+      font-weight: 400;
+
+      line-height: 1.1;
+
+      letter-spacing: -0.025em;
+    }
+
+    .academic-section-description {
+      max-width: 650px;
+
+      margin: 22px 0 0;
+
+      font-size: 0.9rem;
+
+      line-height: 1.9;
+
+      opacity: 0.65;
+    }
+
+
+    /* =========================================
+       ẢNH FULL WIDTH
+    ========================================= */
+
+    .academic-image-full {
+      width: 100%;
+
+      overflow: hidden;
+
+      background: #ddd6ca;
+    }
+
+    .academic-image-full img {
+      width: 100%;
+
+      display: block;
+
+      height: auto;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.7s ease;
+    }
+
+    .academic-image-full:hover img {
+      transform: scale(1.015);
+    }
+
+
+    /* =========================================
+       GRID 2 ẢNH
+    ========================================= */
+
+    .academic-image-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 25px;
+    }
+
+    .academic-image-grid .academic-image {
+      overflow: hidden;
+
+      background: #ddd6ca;
+    }
+
+    .academic-image-grid img {
+      width: 100%;
+
+      display: block;
+
+      height: auto;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.7s ease;
+    }
+
+    .academic-image-grid .academic-image:hover img {
+      transform: scale(1.02);
+    }
+
+
+    /* =========================================
+       ẢNH DỌC
+    ========================================= */
+
+    .academic-image-grid.vertical-images img {
+      aspect-ratio: 4 / 5;
+
+      object-fit: cover;
+    }
+
+
+    /* =========================================
+       ẢNH NGANG
+    ========================================= */
+
+    .academic-image-grid.horizontal-images img {
+      aspect-ratio: 16 / 10;
+
+      object-fit: cover;
+    }
+
+
+    /* =========================================
+       TEXT BLOCK
+    ========================================= */
+
+    .academic-text-block {
+      max-width: 720px;
+
+      margin: 0 auto;
+    }
+
+    .academic-text-block p {
+      margin: 0;
+
+      font-size: 1rem;
+
+      line-height: 2;
+
+      opacity: 0.7;
+    }
+
+
+    /* =========================================
+       BACK TO ABOUT
+    ========================================= */
+
+    .academic-back {
+      width: min(1050px, 88%);
+
+      margin: 20px auto 0;
+
+      padding-top: 40px;
+
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+      text-align: center;
+    }
+
+    .academic-back a {
+      display: inline-block;
+
+      color: inherit;
+
+      text-decoration: none;
+
+      font-size: 0.7rem;
+
+      letter-spacing: 0.12em;
+
+      text-transform: uppercase;
+
+      padding-bottom: 8px;
+
+      border-bottom: 1px solid currentColor;
+
+      transition: opacity 0.3s ease;
+    }
+
+    .academic-back a:hover {
+      opacity: 0.5;
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 767px) {
+
+      .academic-detail {
+        padding-top: 90px;
+
+        padding-bottom: 80px;
+      }
+
+
+      .academic-detail-header {
+        width: 88%;
+      }
+
+
+      .academic-detail-header h1 {
+        font-size: clamp(2.8rem, 12vw, 4.5rem);
+
+        line-height: 1.08;
+      }
+
+
+      .academic-detail-subtitle {
+        font-size: 0.85rem;
+
+        line-height: 1.8;
+      }
+
+
+      .academic-detail-info {
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+
+        margin-top: 50px;
+      }
+
+
+      .academic-cover {
+        width: 100%;
+
+        margin-top: 60px;
+      }
+
+
+      .academic-content {
+        width: 88%;
+
+        margin-top: 90px;
+      }
+
+
+      .academic-section {
+        margin-bottom: 90px;
+      }
+
+
+      .academic-section-heading {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+
+        margin-bottom: 30px;
+      }
+
+
+      .academic-section-heading h2 {
+        font-size: 2.4rem;
+      }
+
+
+      .academic-image-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+      }
+
+
+      .academic-image-grid.horizontal-images img {
+        aspect-ratio: 16 / 10;
+      }
+
+
+      .academic-image-grid.vertical-images img {
+        aspect-ratio: 4 / 5;
+      }
+
+
+      .academic-text-block p {
+        font-size: 0.9rem;
+
+        line-height: 1.9;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- =========================================
+       HEADER
+  ========================================= -->
+
+  <header class="site-header">
+
+    <a href="index.html" class="brand">
+      ARCHITECTURE · INTERIOR · EXTERIOR
+    </a>
+
+    <nav>
+
+      <a href="index.html">
+        TRANG CHỦ
+      </a>
+
+      <a href="about.html">
+        VỀ TÔI
+      </a>
+
+      <a href="projects.html">
+        CÔNG TRÌNH
+      </a>
+
+      <a href="materials.html">
+        TÀI LIỆU
+      </a>
+
+      <a href="contact.html">
+        LIÊN HỆ
+      </a>
+
+    </nav>
+
+    <button
+      class="menu-toggle"
+      aria-label="Mở menu"
+    >
+      ☰
+    </button>
+
+  </header>
+
+
+
+  <!-- =========================================
+       MAIN
+  ========================================= -->
+
+  <main class="academic-detail">
+
+
+    <!-- =======================================
+         TIÊU ĐỀ ĐỒ ÁN
+    ======================================== -->
+
+    <header class="academic-detail-header">
+
+      <p class="academic-detail-number">
+        ĐỒ ÁN / 01
+      </p>
+
+      <h1>
+        Thiết kế nhà ở biệt thự
+      </h1>
+
+      <p class="academic-detail-subtitle">
+        Đồ án kiến trúc tập trung vào việc tạo nên
+        một không gian sống gần gũi với thiên nhiên,
+        cân bằng giữa công năng, ánh sáng và trải nghiệm
+        của người sử dụng.
+      </p>
+
+    </header>
+
+
+
+    <!-- =======================================
+         THÔNG TIN
+    ======================================== -->
+
+    <div class="academic-detail-info">
+
+      <div class="academic-info-item">
+
+        <span>
+          Loại đồ án
+        </span>
+
+        <strong>
+          Đồ án kiến trúc
+        </strong>
+
+      </div>
+
+
+      <div class="academic-info-item">
+
+        <span>
+          Hạng mục
+        </span>
+
+        <strong>
+          Nhà ở biệt thự
+        </strong>
+
+      </div>
+
+
+      <div class="academic-info-item">
+
+        <span>
+          Nội dung
+        </span>
+
+        <strong>
+          Concept · Mặt bằng · Phối cảnh
+        </strong>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =======================================
+         ẢNH BÌA
+    ======================================== -->
+
+    <div class="academic-cover">
+
+      <img
+        src="images-doan/phoi-anh-bt.jpeg"
+        alt="Phối cảnh tổng thể đồ án thiết kế nhà ở biệt thự"
+      >
+
+    </div>
+
+
+
+    <!-- =======================================
+         NỘI DUNG ĐỒ ÁN
+    ======================================== -->
+
+    <div class="academic-content">
+
+
+      <!-- =====================================
+           01 — CONCEPT
+      ====================================== -->
+
+      <section class="academic-section">
+
+        <div class="academic-section-heading">
+
+          <p class="academic-section-number">
+            01 / CONCEPT
+          </p>
+
+          <div>
+
+            <h2>
+              Ý tưởng thiết kế
+            </h2>
+
+            <p class="academic-section-description">
+              Ý tưởng được hình thành từ mong muốn tạo ra
+              một không gian sống mộc mạc, nhẹ nhàng và
+              có sự kết nối với cảnh quan xung quanh.
+              Các yếu tố ánh sáng tự nhiên, vật liệu và
+              khoảng xanh được sử dụng để tạo nên trải
+              nghiệm sống gần gũi và thư giãn.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="academic-image-full">
+
+          <img
+            src="images-doan/concept.jpg"
+            alt="Concept đồ án kiến trúc"
+          >
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================
+           02 — MẶT BẰNG
+      ====================================== -->
+
+      <section class="academic-section">
+
+        <div class="academic-section-heading">
+
+          <p class="academic-section-number">
+            02 / PLAN
+          </p>
+
+          <div>
+
+            <h2>
+              Mặt bằng công năng
+            </h2>
+
+            <p class="academic-section-description">
+              Phương án mặt bằng được tổ chức dựa trên
+              sự phân chia rõ ràng giữa không gian riêng
+              tư và không gian sinh hoạt chung, đồng thời
+              đảm bảo khả năng tiếp cận ánh sáng và thông
+              gió tự nhiên.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="academic-image-grid horizontal-images">
+
+          <div class="academic-image">
+
+            <img
+              src="images-doan/anh-2.jpg"
+              alt="Mặt bằng tầng 1"
+            >
+
+          </div>
+
+
+          <div class="academic-image">
+
+            <img
+              src="images-doan/anh-3.jpg"
+              alt="Mặt bằng tầng 2"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================
+           03 — PHỐI CẢNH
+      ====================================== -->
+
+      <section class="academic-section">
+
+        <div class="academic-section-heading">
+
+          <p class="academic-section-number">
+            03 / PERSPECTIVE
+          </p>
+
+          <div>
+
+            <h2>
+              Phối cảnh kiến trúc
+            </h2>
+
+            <p class="academic-section-description">
+              Các phối cảnh thể hiện hình thức kiến trúc,
+              vật liệu và mối quan hệ giữa công trình với
+              cảnh quan. Ngôn ngữ thiết kế hướng đến sự
+              đơn giản, tự nhiên và bền vững.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="academic-image-grid horizontal-images">
+
+          <div class="academic-image">
+
+            <img
+              src="images-doan/anh-4.jpeg"
+              alt="Phối cảnh ngoại thất 01"
+            >
+
+          </div>
+
+
+          <div class="academic-image">
+
+            <img
+              src="images-doan/anh-5.jpeg"
+              alt="Phối cảnh ngoại thất 02"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================
+           04 — NỘI THẤT
+      ====================================== -->
+
+      <section class="academic-section">
+
+        <div class="academic-section-heading">
+
+          <p class="academic-section-number">
+            04 / INTERIOR
+          </p>
+
+          <div>
+
+            <h2>
+              Không gian nội thất
+            </h2>
+
+            <p class="academic-section-description">
+              Nội thất sử dụng bảng màu trung tính,
+              vật liệu tự nhiên và những đường nét
+              tối giản nhằm tạo nên cảm giác ấm áp,
+              thư giãn và phù hợp với tinh thần chung
+              của công trình.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="academic-image-grid vertical-images">
+
+          <div class="academic-image">
+
+            <img
+              src="images-doan/anh-6.jpeg"
+              alt="Không gian nội thất 01"
+            >
+
+          </div>
+
+
+          <div class="academic-image">
+
+            <img
+              src="images-doan/anh-4.png"
+              alt="Không gian nội thất 02"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================
+           05 — GHI CHÚ
+      ====================================== -->
+
+      <section class="academic-section">
+
+        <div class="academic-section-heading">
+
+          <p class="academic-section-number">
+            05 / NOTE
+          </p>
+
+          <div>
+
+            <h2>
+              Ghi chú đồ án
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="academic-text-block">
+
+          <p>
+            Đây là đồ án được thực hiện trong quá trình
+            học tập và nghiên cứu kiến trúc. Các nội dung
+            trong đồ án bao gồm quá trình hình thành ý tưởng,
+            nghiên cứu công năng, triển khai mặt bằng,
+            hình khối kiến trúc và thể hiện phối cảnh.
+          </p>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+
+
+    <!-- =======================================
+         QUAY LẠI VỀ TÔI
+    ======================================== -->
+
+    <div class="academic-back">
+
+      <a href="about.html">
+        ← Quay lại Về tôi
+      </a>
+
+    </div>
+
+
+  </main>
+
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================= -->
+
+  <footer class="site-footer">
+
+    <p>
+      © 2026 — ARCHITECTURE · INTERIOR · EXTERIOR
+    </p>
+
+  </footer>
+
+
+
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================= -->
+
+  <script src="js/script.js"></script>
+
+</body>
+</html>
