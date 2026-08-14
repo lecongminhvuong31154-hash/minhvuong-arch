@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tài liệu — ARCHITECT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background: #f4f0e8;
+            color: #20201e;
+            font-family: "DM Sans", sans-serif;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .site-header {
+            height: 80px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            background: #bcbab5;
+        }
+
+
+        .brand {
+            text-decoration: none;
+
+            color: #111;
+
+            font-size: 20px;
+
+            font-weight: 500;
+
+            letter-spacing: 0.08em;
+        }
+
+
+        .brand span {
+            color: #a97858;
+        }
+
+
+        .site-header nav {
+            display: flex;
+
+            gap: 30px;
+        }
+
+
+        .site-header nav a {
+            text-decoration: none;
+
+            color: #555;
+
+            font-size: 13px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.08em;
+        }
+
+
+        .site-header nav a.active {
+            color: #111;
+
+            border-bottom: 1px solid #a97858;
+
+            padding-bottom: 8px;
+        }
+
+
+        .menu-toggle {
+            display: none;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .page-hero {
+            padding: 105px 5% 90px;
+        }
+
+
+        .eyebrow {
+            margin: 0 0 25px;
+
+            font-size: 13px;
+
+            letter-spacing: 0.18em;
+
+            color: #77736c;
+        }
+
+
+        .page-hero h1 {
+            margin: 0;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(55px, 7vw, 90px);
+
+            font-weight: 400;
+
+            line-height: 1.05;
+        }
+
+
+        .page-hero h1 em {
+            font-weight: 400;
+        }
+
+
+        .page-lead {
+            margin-top: 30px;
+
+            font-size: 17px;
+
+            color: #77736c;
+        }
+
+
+        /* =====================================================
+           RESOURCE LIBRARY
+           ===================================================== */
+
+        .document-library {
+
+            width: 100%;
+
+            padding: 20px 5% 120px;
+        }
+
+
+        /* 3 CỘT */
+
+        .document-grid {
+
+            width: 100%;
+
+            max-width: 1400px;
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            gap: 24px;
+        }
+
+
+        /* =====================================================
+           Ô TÀI LIỆU
+           ===================================================== */
+
+        .document-card {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-height: 260px;
+
+            padding: 30px;
+
+            background: #e6e1d8;
+
+            border: 1px solid #d2cdc3;
+
+            border-radius: 16px;
+
+            text-decoration: none;
+
+            color: #20201e;
+
+            transition: all 0.25s ease;
+        }
+
+
+        /* HOVER */
+
+        .document-card:hover {
+
+            transform: translateY(-5px);
+
+            background: #ddd8cf;
+
+            border-color: #bdb7ad;
+        }
+
+
+        /* SỐ */
+
+        .document-number {
+
+            display: block;
+
+            margin-bottom: 55px;
+
+            font-size: 13px;
+
+            letter-spacing: 0.15em;
+
+            color: #77736c;
+        }
+
+
+        /* TÊN */
+
+        .document-card h2 {
+
+            margin: 0 0 16px;
+
+            font-family: "DM Sans", sans-serif;
+
+            font-size: 22px;
+
+            line-height: 1.2;
+
+            font-weight: 500;
+
+            color: #20201e;
+        }
+
+
+        /* MÔ TẢ */
+
+        .document-card p {
+
+            margin: 0;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+            color: #77736c;
+        }
+
+
+        /* TUYỆT ĐỐI KHÔNG CÓ MŨI TÊN */
+
+        .document-card::before,
+
+        .document-card::after {
+
+            content: none !important;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            min-height: 180px;
+
+            padding: 45px 50px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            background: #282725;
+
+            color: white;
+        }
+
+
+        footer strong {
+
+            font-size: 20px;
+
+            letter-spacing: 0.06em;
+        }
+
+
+        footer strong span {
+
+            color: #a97858;
+        }
+
+
+        footer p {
+
+            color: #aaa;
+
+            font-size: 13px;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            gap: 30px;
+        }
+
+
+        .footer-links a {
+
+            color: #aaa;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           TABLET
+           ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .document-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .site-header {
+
+                padding: 0 20px;
+
+            }
+
+
+            .site-header nav {
+
+                display: none;
+
+            }
+
+
+            .menu-toggle {
+
+                display: block;
+
+                border: none;
+
+                background: none;
+
+                font-size: 22px;
+
+            }
+
+
+            .page-hero {
+
+                padding: 70px 25px 60px;
+
+            }
+
+
+            .page-hero h1 {
+
+                font-size: 48px;
+
+            }
+
+
+            .document-library {
+
+                padding: 20px 20px 80px;
+
+            }
+
+
+            .document-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 16px;
+
+            }
+
+
+            .document-card {
+
+                min-height: 220px;
+
+                padding: 25px;
+
+            }
+
+
+            footer {
+
+                padding: 35px 25px;
+
+                flex-direction: column;
+
+                gap: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="site-header">
+
+        <a class="brand" href="index.html">
+
+            ARCHITECT<span>.</span>
+
+        </a>
+
+
+        <button class="menu-toggle">
+
+            ☰
+
+        </button>
+
+
+        <nav>
+
+            <a href="index.html">
+                Trang chủ
+            </a>
+
+            <a href="about.html">
+                Về tôi
+            </a>
+
+            <a href="projects.html">
+                Công trình
+            </a>
+
+            <a href="documents.html" class="active">
+                Tài liệu
+            </a>
+
+            <a href="contact.html">
+                Liên hệ
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+
+        <section class="page-hero">
+
+            <p class="eyebrow">
+                RESOURCE LIBRARY
+            </p>
+
+
+            <h1>
+                Thư viện <em>tài liệu.</em>
+            </h1>
+
+
+            <p class="page-lead">
+                Nơi lưu trữ và chia sẻ những tài liệu hữu ích
+                trong quá trình thiết kế.
+            </p>
+
+        </section>
+
+
+
+        <!-- ================= DOCUMENTS ================= -->
+
+        <section class="document-library">
+
+
+            <div class="document-grid">
+
+
+                <!-- 01 -->
+
+                <a
+                    class="document-card"
+                    href="hhttps://drive.google.com/drive/folders/1ovMlzxuS9lLLn2PT6hV1xOnKalqUkGU1?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        01
+                    </span>
+
+                    <h2>
+                        PHẦN MỀM
+                    </h2>
+
+                   
+                </a>
+
+
+
+                <!-- 02 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1NaV1SnRt8fEmw3PfdZ9tPB6qaFgWTShJ?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        02
+                    </span>
+
+                    <h2>
+                        MAP VẬT LIỆU
+                    </h2>
+
+                    
+
+                </a>
+
+
+
+                <!-- 03 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1F5XYDVfynFbaEHqQ3fjqlBlx_1oevTQS?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        03
+                    </span>
+
+                    <h2>
+                        PLUGIN
+                    </h2>
+
+                    
+
+                </a>
+
+
+
+                <!-- 04 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1j83VfauMqpHDK_kW5NP1ZofUi1FDCXfW?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        04
+                    </span>
+
+                    <h2>
+                        LUTS MÀU D5
+                    </h2>
+
+                   
+                </a>
+
+
+
+                <!-- 05 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1lbOfTpGtEtaKbhyL1AEd_PTJAyTJ8aY1?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        05
+                    </span>
+
+                    <h2>
+                        IES ĐÈN
+                    </h2>
+
+                   
+
+                </a>
+
+
+
+                <!-- 06 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1LpHhoZhR31XXxXC8boFnmmVcw7x2JRgE?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        06
+                    </span>
+
+                    <h2>
+                        HDRI
+                    </h2>
+
+                   
+
+                </a>
+
+
+
+                <!-- 07 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1YaA9xuDOoOq3grK0QEzu8jHo-BZ2mmjx?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        07
+                    </span>
+
+                    <h2>
+                        TV REVIT
+                    </h2>
+
+                    
+                </a>
+
+
+
+                <!-- 08 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/1OkZfvWs6sEuUtAbxCxUxSePGZAJapGx2?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        08
+                    </span>
+
+                    <h2>
+                        TV CAD
+                    </h2>
+
+                   
+
+                </a>
+
+
+
+                <!-- 09 -->
+
+                <a
+                    class="document-card"
+                    href="https://drive.google.com/drive/folders/153xmI1f07_sNA_ouWPmgrsPztKPRjLMx?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="document-number">
+                        09
+                    </span>
+
+                    <h2>
+                        PRESET MÀU ẢNH
+                    </h2>
+
+                   
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div>
+
+            <strong>
+                ARCHITECT<span>.</span>
+            </strong>
+
+            <p>
+                Architecture · Interior · Exterior
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="projects.html">
+                Công trình
+            </a>
+
+            <a href="contact.html">
+                Liên hệ
+            </a>
+
+        </div>
+
+
+        <p>
+            © 2026 — Personal Portfolio
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
