@@ -596,8 +596,7 @@ const {
         },
 
         emailRedirectTo:
-            window.location.origin +
-            window.location.pathname
+    "https://minhvuongarch.io.vn/"
     }
 });
 
