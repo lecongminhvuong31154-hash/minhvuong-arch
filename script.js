@@ -612,11 +612,13 @@ const {
                 );
 
                 return;
-              /* =====================================================
+             /* =====================================================
    LICENSE + DEVICE ACTIVATION
    ===================================================== */
 
 async function activateCurrentDevice() {
+
+    console.log("🚀 activateCurrentDevice đã được gọi");
 
     try {
 
@@ -627,13 +629,18 @@ async function activateCurrentDevice() {
         } = await supabaseClient.auth.getUser();
 
         if (userError || !userData?.user) {
-            console.log("Chưa đăng nhập, không kích hoạt device.");
+            console.log(
+                "Chưa đăng nhập, không kích hoạt device."
+            );
             return;
         }
 
         const user = userData.user;
 
-        console.log("User hiện tại:", user.email);
+        console.log(
+            "User hiện tại:",
+            user.email
+        );
 
         // ================================================
         // Lấy License của user
