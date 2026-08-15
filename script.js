@@ -615,10 +615,11 @@ const {
              /* =====================================================
    LICENSE + DEVICE ACTIVATION
    ===================================================== */
-
+console.log("✅ File Device đã được load");
 async function activateCurrentDevice() {
 
     console.log("🚀 activateCurrentDevice đã được gọi");
+
 
     try {
 
