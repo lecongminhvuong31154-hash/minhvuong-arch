@@ -1133,7 +1133,33 @@ async function activateCurrentDevice() {
 /* =====================================================
    SUPABASE AUTH STATE
    ===================================================== */
+function updateNavigationForAuth(session) {
 
+    supabaseClient.auth.onAuthStateChange(
+    (event, session) => {
+
+        console.log(
+            "Supabase Auth:",
+            event
+        );
+
+        updateAuthUI(
+            session?.user || null
+        );
+
+        // Ẩn/hiện menu theo trạng thái đăng nhập
+        updateNavigationForAuth(session);
+
+        if (session?.user) {
+
+            setTimeout(() => {
+                activateCurrentDevice();
+            }, 0);
+
+        }
+
+    }
+);
 supabaseClient.auth.onAuthStateChange(
     (event, session) => {
 
