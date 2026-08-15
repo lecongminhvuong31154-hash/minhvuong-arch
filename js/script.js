@@ -974,7 +974,161 @@ function updateAuthUI(user) {
     }
 
 }
+/* =====================================================
+   LICENSE + DEVICE ACTIVATION
+   ===================================================== */
 
+async function activateCurrentDevice() {
+
+    console.log("🚀 activateCurrentDevice đã được gọi");
+
+    try {
+
+        // Kiểm tra user đang đăng nhập
+        const {
+            data: userData,
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+        if (userError || !userData?.user) {
+
+            console.log(
+                "Chưa đăng nhập, không kích hoạt device."
+            );
+
+            return;
+        }
+
+        const user = userData.user;
+
+        console.log(
+            "User hiện tại:",
+            user.email
+        );
+
+
+        // ================================================
+        // Lấy License của user
+        // ================================================
+
+        const {
+            data: licenses,
+            error: licenseError
+        } = await supabaseClient.rpc(
+            "get_my_license"
+        );
+
+        if (licenseError) {
+
+            console.error(
+                "Không lấy được License:",
+                licenseError
+            );
+
+            return;
+        }
+
+        const license = licenses?.[0];
+
+        if (!license) {
+
+            console.log(
+                "Tài khoản chưa có License."
+            );
+
+            return;
+        }
+
+        console.log(
+            "License:",
+            license.license_key
+        );
+
+
+        // ================================================
+        // Tạo / lấy Device ID
+        // ================================================
+
+        let deviceId =
+            localStorage.getItem(
+                "minhvuong_device_id"
+            );
+
+        if (!deviceId) {
+
+            deviceId =
+                crypto.randomUUID();
+
+            localStorage.setItem(
+                "minhvuong_device_id",
+                deviceId
+            );
+        }
+
+        console.log(
+            "Device ID:",
+            deviceId
+        );
+
+
+        // ================================================
+        // Tên thiết bị
+        // ================================================
+
+        const deviceName =
+            "Web - " +
+            navigator.platform;
+
+
+        // ================================================
+        // Kích hoạt Device
+        // ================================================
+
+        const {
+            data,
+            error
+        } = await supabaseClient.rpc(
+            "activate_device",
+            {
+                p_license_id: license.id,
+                p_device_id: deviceId,
+                p_device_name: deviceName
+            }
+        );
+
+        if (error) {
+
+            console.error(
+                "Kích hoạt thiết bị thất bại:",
+                error
+            );
+
+            return;
+        }
+
+        console.log(
+            "✅ Thiết bị đã được kích hoạt:",
+            data
+        );
+
+        console.log(
+            "License:",
+            license.license_key
+        );
+
+        console.log(
+            "Thiết bị tối đa:",
+            license.max_devices
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Device activation error:",
+            error
+        );
+    }
+}
 
 /* =====================================================
    SUPABASE AUTH STATE
