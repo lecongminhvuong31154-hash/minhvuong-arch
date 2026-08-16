@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ARCHI — MATERIAL BOARD</title>
+
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+       s /* =====================================================
+           PLUGIN DETAIL PAGE
+           ===================================================== */
+
+        .plugin-detail-page {
+            background: #f4f0e8;
+            color: #292724;
+        }
+
+
+        /* =====================================================
+           PLUGIN DETAIL HERO
+           ===================================================== */
+
+        .plugin-detail {
+            width: 100%;
+            max-width: 1500px;
+
+            margin: 0 auto;
+
+            padding:
+                90px 7vw
+                110px;
+        }
+
+
+        .plugin-detail-layout {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.1fr)
+                minmax(380px, 0.9fr);
+
+            gap: clamp(50px, 8vw, 120px);
+
+            align-items: center;
+        }
+
+
+        /* =====================================================
+           PLUGIN IMAGE
+           ===================================================== */
+
+        .plugin-detail-image {
+            width: 100%;
+
+            aspect-ratio: 4 / 3;
+
+            overflow: hidden;
+
+            background: #ebe7df;
+
+            border-radius: 12px;
+        }
+
+
+        .plugin-detail-image img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            object-position: center;
+
+            transition:
+                transform 0.6s ease;
+        }
+
+
+        .plugin-detail-image:hover img {
+            transform: scale(1.02);
+        }
+
+
+        /* =====================================================
+           PLUGIN INFORMATION
+           ===================================================== */
+
+        .plugin-detail-info {
+            width: 100%;
+        }
+
+
+        .plugin-detail-number {
+            display: block;
+
+            margin-bottom: 20px;
+
+            font-size: 11px;
+
+            letter-spacing: 0.16em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+
+        .plugin-detail-info h1 {
+            margin: 0 0 22px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(
+                2.8rem,
+                5vw,
+                5.5rem
+            );
+
+            font-weight: 400;
+
+            line-height: 1;
+
+            letter-spacing: -0.02em;
+        }
+
+
+        .plugin-detail-description {
+            max-width: 600px;
+
+            margin-bottom: 30px;
+
+            font-size: 1rem;
+
+            line-height: 1.8;
+
+            color: #6f6962;
+        }
+
+
+        /* =====================================================
+           PRICE
+           ===================================================== */
+
+        .plugin-detail-price {
+            margin-bottom: 30px;
+
+            font-size: 1.35rem;
+
+            font-weight: 600;
+
+            color: #292724;
+        }
+
+
+        /* =====================================================
+           BUY AREA
+           ===================================================== */
+
+        .plugin-buy-area {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .plugin-buy-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 52px;
+
+            padding:
+                14px 28px;
+
+            border: 1px solid #292724;
+
+            background: #292724;
+
+            color: #ffffff;
+
+            font-family: "DM Sans", sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 500;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+
+            text-decoration: none;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        .plugin-buy-button:hover {
+            background: #b86f52;
+
+            border-color: #b86f52;
+
+            transform: translateY(-2px);
+        }
+
+
+        .plugin-back-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 52px;
+
+            padding:
+                14px 22px;
+
+            border: 1px solid #aaa08e;
+
+            color: #292724;
+
+            font-size: 11px;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease;
+        }
+
+
+        .plugin-back-button:hover {
+            background: #292724;
+
+            color: #ffffff;
+
+            border-color: #292724;
+        }
+
+
+        /* =====================================================
+           PLUGIN META
+           ===================================================== */
+
+        .plugin-meta {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 25px;
+
+            margin-top: 45px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #c8c0b4;
+        }
+
+
+        .plugin-meta-item span {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 10px;
+
+            letter-spacing: 0.14em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+
+        .plugin-meta-item strong {
+            font-size: 14px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           FEATURES
+           ===================================================== */
+
+        .plugin-features-section {
+            padding:
+                100px 7vw;
+
+            background: #e5dccb;
+        }
+
+
+        .plugin-features {
+            width: 100%;
+            max-width: 1200px;
+
+            margin: 0 auto;
+        }
+
+
+        .plugin-section-label {
+            margin-bottom: 18px;
+
+            font-size: 11px;
+
+            letter-spacing: 0.18em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+
+        .plugin-features h2 {
+            margin: 0 0 50px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(
+                2.4rem,
+                5vw,
+                4.5rem
+            );
+
+            font-weight: 400;
+
+            line-height: 1.1;
+        }
+
+
+        .plugin-feature-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .plugin-feature {
+            padding: 30px;
+
+            border-top: 1px solid #9f9688;
+        }
+
+
+        .plugin-feature-number {
+            display: block;
+
+            margin-bottom: 35px;
+
+            font-size: 10px;
+
+            letter-spacing: 0.15em;
+
+            color: #99948c;
+        }
+
+
+        .plugin-feature h3 {
+            margin: 0 0 10px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 1.6rem;
+
+            font-weight: 400;
+        }
+
+
+        .plugin-feature p {
+            margin: 0;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            color: #706a62;
+        }
+
+
+        /* =====================================================
+           WHAT YOU GET
+           ===================================================== */
+
+        .plugin-includes-section {
+            padding:
+                110px 7vw;
+        }
+
+
+        .plugin-includes {
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 0 auto;
+        }
+
+
+        .plugin-includes-layout {
+            display: grid;
+
+            grid-template-columns:
+                0.8fr
+                1.2fr;
+
+            gap: 80px;
+        }
+
+
+        .plugin-includes h2 {
+            margin: 0;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(
+                2.4rem,
+                5vw,
+                4.5rem
+            );
+
+            font-weight: 400;
+
+            line-height: 1.1;
+        }
+
+
+        .plugin-includes-list {
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .plugin-include-item {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 20px;
+
+            padding:
+                22px 0;
+
+            border-bottom: 1px solid #c8c0b4;
+        }
+
+
+        .plugin-include-item:first-child {
+            border-top: 1px solid #c8c0b4;
+        }
+
+
+        .plugin-include-icon {
+            flex: 0 0 auto;
+
+            width: 25px;
+            height: 25px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #99948c;
+
+            border-radius: 50%;
+
+            font-size: 11px;
+        }
+
+
+        .plugin-include-item p {
+            margin: 0;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           PURCHASE CTA
+           ===================================================== */
+
+        .plugin-purchase-section {
+            padding:
+                100px 7vw;
+
+            background: #7c8063;
+
+            color: #f4f0e8;
+
+            text-align: center;
+        }
+
+
+        .plugin-purchase-section h2 {
+            margin: 0 0 20px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(
+                2.5rem,
+                6vw,
+                5.5rem
+            );
+
+            font-weight: 400;
+
+            line-height: 1.05;
+        }
+
+
+        .plugin-purchase-section p {
+            max-width: 550px;
+
+            margin:
+                0 auto 30px;
+
+            opacity: 0.8;
+        }
+
+
+        .plugin-purchase-price {
+            margin-bottom: 28px;
+
+            font-size: 1.3rem;
+
+            font-weight: 600;
+        }
+
+
+        .plugin-purchase-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 52px;
+
+            padding:
+                14px 32px;
+
+            background: #f4f0e8;
+
+            color: #292724;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        .plugin-purchase-button:hover {
+            background: #b86f52;
+
+            color: #ffffff;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .plugin-detail {
+                padding:
+                    70px 6vw
+                    80px;
+            }
+
+
+            .plugin-detail-layout {
+                grid-template-columns: 1fr;
+
+                gap: 45px;
+            }
+
+
+            .plugin-feature-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .plugin-includes-layout {
+                grid-template-columns: 1fr;
+
+                gap: 45px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .plugin-detail {
+                padding:
+                    50px 6vw
+                    65px;
+            }
+
+
+            .plugin-detail-image {
+                aspect-ratio: 4 / 3;
+
+                border-radius: 9px;
+            }
+
+
+            .plugin-detail-info h1 {
+                font-size:
+                    clamp(2.5rem, 13vw, 4rem);
+            }
+
+
+            .plugin-detail-description {
+                font-size: 0.92rem;
+            }
+
+
+            .plugin-buy-area {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .plugin-buy-button,
+            .plugin-back-button {
+                width: 100%;
+            }
+
+
+            .plugin-meta {
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+            }
+
+
+            .plugin-features-section,
+            .plugin-includes-section,
+            .plugin-purchase-section {
+                padding:
+                    70px 6vw;
+            }
+
+
+            .plugin-feature-grid {
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .plugin-feature {
+                padding: 25px 0;
+            }
+
+
+            .plugin-features h2,
+            .plugin-includes h2 {
+                font-size:
+                    clamp(2.3rem, 11vw, 3.2rem);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="plugin-detail-page">
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="site-header">
+
+    <a href="index.html" class="brand">
+        ARCHI<span>.</span>
+    </a>
+
+    <nav>
+
+        <a href="index.html">
+            HOME
+        </a>
+
+        <a href="document.html">
+            DOCUMENT
+        </a>
+
+        <a href="portfolio.html">
+            PORTFOLIO
+        </a>
+
+        <a href="contact.html">
+            CONTACT
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     PLUGIN DETAIL
+     ===================================================== -->
+
+<main>
+
+
+<section class="plugin-detail">
+
+    <div class="plugin-detail-layout">
+
+
+        <!-- ẢNH -->
+
+        <div class="plugin-detail-image">
+
+            <img id="pluginDetailImage" src="ANH-PLUGIN/PLUGIN-1.jpg" alt="Scene Manager Pro">
+
+        </div>
+
+
+        <!-- THÔNG TIN -->
+
+        <div class="plugin-detail-info">
+
+            <span class="plugin-detail-number" id="pluginDetailNumber">
+                01 / PLUGIN
+            </span>
+
+
+            <h1 id="pluginDetailName">
+                SCENE MANAGER MV
+            </h1>
+
+
+            <p class="plugin-detail-description" id="pluginDetailDescription">
+
+                Công cụ tạo Material Board nhanh
+                dành cho kiến trúc sư và designer.
+
+                Giúp trình bày vật liệu, màu sắc
+                và ý tưởng thiết kế một cách trực quan,
+                chuyên nghiệp và tiết kiệm thời gian.
+
+            </p>
+
+
+            <div class="plugin-detail-price" id="pluginDetailPrice">—</div>
+
+
+            <div class="plugin-buy-area">
+
+                <!-- SAU NÀY NÚT NÀY SẼ GỌI THANH TOÁN -->
+
+                <a
+    href="checkout.html"
+    class="buy-button"
+    id="buyPluginButton"
+>
+    MUA NGAY
+</a>
+
+                <a
+                    href="document.html"
+                    class="plugin-back-button"
+                >
+                    QUAY LẠI
+                </a>
+
+            </div>
+
+
+            <!-- THÔNG TIN -->
+
+            <div class="plugin-meta">
+
+                <div class="plugin-meta-item">
+
+                    <span>
+                        PHIÊN BẢN
+                    </span>
+
+                    <strong id="pluginDetailVersion">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="plugin-meta-item">
+
+                    <span>
+                        ĐỊNH DẠNG
+                    </span>
+
+                    <strong>
+                        Plugin / Digital
+                    </strong>
+
+                </div>
+
+
+                <div class="plugin-meta-item">
+
+                    <span>
+                        GIÁ
+                    </span>
+
+                    <strong id="pluginInfoPrice">—</strong>
+
+                </div>
+
+
+                <div class="plugin-meta-item">
+
+                    <span>
+                        CẬP NHẬT
+                    </span>
+
+                    <strong>
+                        2026
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FEATURES
+     ===================================================== -->
+
+<section class="plugin-features-section">
+
+    <div class="plugin-features">
+
+        <div class="plugin-section-label">
+            FEATURES
+        </div>
+
+
+        <h2>
+            Công cụ được tạo
+            cho quy trình thiết kế.
+        </h2>
+
+
+        <div class="plugin-feature-grid">
+
+
+            <article class="plugin-feature">
+
+                <span class="plugin-feature-number">
+                    01
+                </span>
+
+                <h3>
+                    Material Board
+                </h3>
+
+                <p>
+                    Tạo bảng vật liệu trực quan
+                    để trình bày ý tưởng thiết kế.
+                </p>
+
+            </article>
+
+
+            <article class="plugin-feature">
+
+                <span class="plugin-feature-number">
+                    02
+                </span>
+
+                <h3>
+                    Color System
+                </h3>
+
+                <p>
+                    Sắp xếp màu sắc và vật liệu
+                    thành một hệ thống thống nhất.
+                </p>
+
+            </article>
+
+
+            <article class="plugin-feature">
+
+                <span class="plugin-feature-number">
+                    03
+                </span>
+
+                <h3>
+                    Fast Workflow
+                </h3>
+
+                <p>
+                    Rút ngắn thời gian chuẩn bị
+                    bảng trình bày cho dự án.
+                </p>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WHAT YOU GET
+     ===================================================== -->
+
+<section class="plugin-includes-section">
+
+    <div class="plugin-includes">
+
+        <div class="plugin-includes-layout">
+
+
+            <div>
+
+                <div class="plugin-section-label">
+                    INCLUDED
+                </div>
+
+                <h2>
+                    Bạn nhận được
+                    gì?
+                </h2>
+
+            </div>
+
+
+            <div class="plugin-includes-list">
+
+
+                <div class="plugin-include-item">
+
+                    <span class="plugin-include-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        ARCHI — MATERIAL BOARD
+                    </p>
+
+                </div>
+
+
+                <div class="plugin-include-item">
+
+                    <span class="plugin-include-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        File plugin phiên bản v1.0
+                    </p>
+
+                </div>
+
+
+                <div class="plugin-include-item">
+
+                    <span class="plugin-include-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        Hướng dẫn cài đặt và sử dụng
+                    </p>
+
+                </div>
+
+
+                <div class="plugin-include-item">
+
+                    <span class="plugin-include-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        Quyền tải file sau khi thanh toán
+                    </p>
+
+                </div>
+
+
+                <div class="plugin-include-item">
+
+                    <span class="plugin-include-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        Cập nhật phiên bản trong tương lai
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PURCHASE
+     ===================================================== -->
+
+<section
+    class="plugin-purchase-section"
+    id="purchase"
+>
+
+    <h2>
+        Sẵn sàng sử dụng?
+    </h2>
+
+
+    <p id="pluginPurchaseCopy">
+        Mua plugin
+        và bắt đầu xây dựng Material Board
+        cho dự án của bạn.
+    </p>
+
+
+    <div class="plugin-purchase-price" id="pluginPurchasePrice">—</div>
+
+
+    <!-- SAU NÀY NỐI SUPABASE + THANH TOÁN -->
+
+    <a
+        href="checkout.html"
+        class="plugin-purchase-button"
+        id="purchaseButton"
+    >
+        MUA PLUGIN
+    </a>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <div>
+
+        <strong>
+            ARCHI<span>.</span>
+        </strong>
+
+        <p>
+            Architecture · Design · Digital Tools
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="index.html">
+            HOME
+        </a>
+
+        <a href="document.html">
+            DOCUMENT
+        </a>
+
+        <a href="portfolio.html">
+            PORTFOLIO
+        </a>
+
+    </div>
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/script.js"></script>
+<script>
+/* ============================================================
+   GENERIC PLUGIN DETAIL
+   - selectedProductSlug is selected in documents.html
+   - name / price / version / description come from Supabase
+   - localStorage never supplies price
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const productSlug =
+        localStorage.getItem("selectedProductSlug");
+
+    if (!productSlug) {
+        alert(
+            "Không tìm thấy plugin đã chọn. Vui lòng chọn lại sản phẩm."
+        );
+        window.location.href = "documents.html";
+        return;
+    }
+
+    const client =
+        window.supabaseClient || null;
+
+    if (!client) {
+        console.error(
+            "Supabase client chưa sẵn sàng."
+        );
+        alert(
+            "Không kết nối được hệ thống sản phẩm."
+        );
+        return;
+    }
+
+    function formatPrice(value) {
+        const amount = Number(value);
+
+        if (!Number.isFinite(amount)) {
+            return "—";
+        }
+
+        return new Intl.NumberFormat(
+            "vi-VN"
+        ).format(amount) + " ₫";
+    }
+
+    const {
+        data: product,
+        error
+    } = await client
+        .from("products")
+        .select(
+            "id, name, slug, description, price, version, download_url"
+        )
+        .eq("slug", productSlug)
+        .single();
+
+    if (error || !product) {
+        console.error(
+            "Product detail error:",
+            error
+        );
+
+        alert(
+            "Không tìm thấy sản phẩm trong Supabase. Hãy kiểm tra products.slug = " +
+            productSlug
+        );
+
+        window.location.href =
+            "documents.html";
+
+        return;
+    }
+
+    const nameEl =
+        document.getElementById(
+            "pluginDetailName"
+        );
+
+    const descriptionEl =
+        document.getElementById(
+            "pluginDetailDescription"
+        );
+
+    const priceEl =
+        document.getElementById(
+            "pluginDetailPrice"
+        );
+
+    const purchasePriceEl =
+        document.getElementById(
+            "pluginPurchasePrice"
+        );
+
+    const infoPriceEl =
+        document.getElementById(
+            "pluginInfoPrice"
+        );
+
+    const versionEl =
+        document.getElementById(
+            "pluginDetailVersion"
+        );
+
+    const purchaseCopyEl =
+        document.getElementById(
+            "pluginPurchaseCopy"
+        );
+
+    const buyButton =
+        document.getElementById(
+            "buyPluginButton"
+        );
+
+    const purchaseButton =
+        document.getElementById(
+            "purchaseButton"
+        );
+
+    const detailImage =
+        document.getElementById(
+            "pluginDetailImage"
+        );
+
+    const formattedPrice =
+        formatPrice(product.price);
+
+    if (nameEl) {
+        nameEl.textContent =
+            product.name;
+    }
+
+    if (descriptionEl) {
+        descriptionEl.textContent =
+            product.description ||
+            "Plugin dành cho quy trình thiết kế.";
+    }
+
+    if (priceEl) {
+        priceEl.textContent =
+            formattedPrice;
+    }
+
+    if (purchasePriceEl) {
+        purchasePriceEl.textContent =
+            formattedPrice;
+    }
+
+    if (infoPriceEl) {
+        infoPriceEl.textContent =
+            formattedPrice;
+    }
+
+    if (versionEl) {
+        versionEl.textContent =
+            product.version
+                ? "v" + product.version
+                : "—";
+    }
+
+    if (purchaseCopyEl) {
+        purchaseCopyEl.textContent =
+            "Mua " + product.name +
+            " và bắt đầu sử dụng plugin.";
+    }
+
+    if (purchaseButton) {
+        purchaseButton.textContent =
+            "MUA " +
+            product.name.toUpperCase();
+    }
+
+    const productImages = {
+        "scene-manager-pro":
+            "ANH-PLUGIN/PLUGIN-1.jpg",
+        "plugin-architecture-tools":
+            "ANH-PLUGIN/PLUGIN-1.jpg",
+        "d5-workflow-tools":
+            "ANH-PLUGIN/PLUGIN-1.jpg"
+    };
+
+    if (detailImage) {
+        detailImage.src =
+            productImages[product.slug] ||
+            "ANH-PLUGIN/PLUGIN-1.jpg";
+
+        detailImage.alt =
+            product.name || "Plugin";
+    }
+
+    document.title =
+        product.name + " — ARCHITECT";
+
+    function goToCheckout(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        // Re-save only the slug.
+        localStorage.setItem(
+            "selectedProductSlug",
+            product.slug
+        );
+
+        localStorage.removeItem(
+            "selectedPlugin"
+        );
+        localStorage.removeItem(
+            "selectedProductId"
+        );
+        localStorage.removeItem(
+            "pluginPrice"
+        );
+
+        window.location.href =
+            "checkout.html";
+    }
+
+    if (buyButton) {
+        buyButton.addEventListener(
+            "click",
+            goToCheckout
+        );
+    }
+
+    if (purchaseButton) {
+        purchaseButton.addEventListener(
+            "click",
+            goToCheckout
+        );
+    }
+});
+</script>
+
+
+</body>
+
+</html>

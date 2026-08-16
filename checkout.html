@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Thanh toán — ARCHI Material Board</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+
+            background: #f4f0e8;
+            color: #292724;
+
+            font-family: "DM Sans", sans-serif;
+
+            font-size: 16px;
+            line-height: 1.7;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .site-header {
+            width: 100%;
+            height: 78px;
+
+            padding: 0 5vw;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: #bab8b2;
+
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+
+            letter-spacing: 0.08em;
+
+            white-space: nowrap;
+        }
+
+        .brand span {
+            color: #b86f52;
+        }
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        .site-header nav a {
+            position: relative;
+
+            font-size: 0.72rem;
+            font-weight: 500;
+
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+
+            opacity: 0.65;
+
+            transition: opacity 0.25s ease;
+        }
+
+        .site-header nav a:hover {
+            opacity: 1;
+        }
+
+
+        /* =====================================================
+           PAGE
+           ===================================================== */
+
+        .checkout-page {
+            width: 100%;
+
+            min-height:
+                calc(100vh - 78px);
+
+            padding:
+                80px 6vw 110px;
+        }
+
+
+        .checkout-container {
+            width: 100%;
+            max-width: 1180px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+           ===================================================== */
+
+        .checkout-header {
+            margin-bottom: 50px;
+        }
+
+        .checkout-label {
+            display: block;
+
+            margin-bottom: 16px;
+
+            font-size: 0.68rem;
+
+            letter-spacing: 0.18em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+        .checkout-header h1 {
+            margin: 0;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(
+                2.8rem,
+                6vw,
+                5.5rem
+            );
+
+            font-weight: 400;
+
+            line-height: 1;
+
+            letter-spacing: -0.02em;
+        }
+
+        .checkout-header p {
+            max-width: 600px;
+
+            margin: 22px 0 0;
+
+            color: #77736d;
+        }
+
+
+        /* =====================================================
+           CHECKOUT GRID
+           ===================================================== */
+
+        .checkout-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 0.85fr)
+                minmax(420px, 1.15fr);
+
+            gap: 30px;
+
+            align-items: start;
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .checkout-card {
+            background: #ebe7df;
+
+            border: 1px solid #d8d2c8;
+
+            border-radius: 14px;
+
+            padding: 32px;
+        }
+
+
+        /* =====================================================
+           PRODUCT
+           ===================================================== */
+
+        .product-card {
+            position: sticky;
+
+            top: 30px;
+        }
+
+        .product-image {
+            width: 100%;
+
+            aspect-ratio: 4 / 3;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background: #ddd7cc;
+
+            margin-bottom: 28px;
+        }
+
+        .product-image img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .product-number {
+            display: block;
+
+            margin-bottom: 10px;
+
+            font-size: 0.65rem;
+
+            letter-spacing: 0.15em;
+
+            color: #99948c;
+        }
+
+        .product-card h2 {
+            margin: 0 0 12px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(
+                1.8rem,
+                3vw,
+                2.7rem
+            );
+
+            font-weight: 400;
+
+            line-height: 1.1;
+        }
+
+        .product-description {
+            margin: 0;
+
+            font-size: 0.9rem;
+
+            line-height: 1.7;
+
+            color: #77736d;
+        }
+
+
+        /* =====================================================
+           PRICE
+           ===================================================== */
+
+        .product-price {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 28px;
+
+            padding-top: 22px;
+
+            border-top: 1px solid #c9c2b8;
+        }
+
+        .product-price span:first-child {
+            font-size: 0.7rem;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+        .product-price strong {
+            font-size: 1.25rem;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           PAYMENT CARD
+           ===================================================== */
+
+        .payment-card {
+            padding: 38px;
+        }
+
+        .payment-title {
+            margin: 0 0 8px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 2rem;
+
+            font-weight: 400;
+
+            line-height: 1.1;
+        }
+
+        .payment-subtitle {
+            margin: 0 0 30px;
+
+            font-size: 0.88rem;
+
+            color: #77736d;
+        }
+
+
+        /* =====================================================
+           ORDER INFO
+           ===================================================== */
+
+        .order-info {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 14px;
+
+            margin-bottom: 28px;
+        }
+
+        .info-box {
+            padding: 16px;
+
+            background: #f4f0e8;
+
+            border: 1px solid #d8d2c8;
+
+            border-radius: 8px;
+        }
+
+        .info-box.full {
+            grid-column: 1 / -1;
+        }
+
+        .info-box span {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 0.62rem;
+
+            letter-spacing: 0.13em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+        .info-box strong {
+            display: block;
+
+            font-size: 0.95rem;
+
+            font-weight: 500;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           BANK TRANSFER
+           ===================================================== */
+
+        .payment-section-label {
+            display: block;
+
+            margin-bottom: 16px;
+
+            font-size: 0.65rem;
+
+            letter-spacing: 0.16em;
+
+            text-transform: uppercase;
+
+            color: #99948c;
+        }
+
+
+        .bank-details {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 0;
+
+            margin-bottom: 28px;
+        }
+
+
+        .bank-row {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid #d2cbc1;
+        }
+
+        .bank-row:first-child {
+            border-top: 1px solid #d2cbc1;
+        }
+
+        .bank-row span {
+            font-size: 0.78rem;
+
+            color: #77736d;
+        }
+
+        .bank-row strong {
+            font-size: 0.9rem;
+
+            font-weight: 500;
+
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           TRANSFER CONTENT
+           ===================================================== */
+
+        .transfer-content {
+            padding: 18px;
+
+            background: #292724;
+
+            color: #ffffff;
+
+            border-radius: 9px;
+
+            margin-bottom: 30px;
+        }
+
+        .transfer-content span {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 0.62rem;
+
+            letter-spacing: 0.13em;
+
+            text-transform: uppercase;
+
+            opacity: 0.55;
+        }
+
+        .transfer-content strong {
+            display: block;
+
+            font-size: 1.05rem;
+
+            letter-spacing: 0.04em;
+
+            word-break: break-all;
+        }
+
+
+        /* =====================================================
+           QR
+           ===================================================== */
+
+        .qr-section {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            padding:
+                25px 20px;
+
+            margin-bottom: 28px;
+
+            background: #f4f0e8;
+
+            border: 1px solid #d8d2c8;
+
+            border-radius: 10px;
+        }
+
+        .qr-section p {
+            margin: 0 0 18px;
+
+            font-size: 0.75rem;
+
+            color: #77736d;
+
+            text-align: center;
+        }
+
+        .qr-wrapper {
+            width: 240px;
+            height: 240px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #ffffff;
+
+            padding: 10px;
+
+            border-radius: 8px;
+        }
+
+        .qr-wrapper img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+        .qr-note {
+            margin-top: 14px !important;
+            margin-bottom: 0 !important;
+
+            font-size: 0.68rem !important;
+
+            color: #99948c !important;
+        }
+
+
+        /* =====================================================
+           EMAIL
+           ===================================================== */
+
+        .customer-form {
+            margin-bottom: 28px;
+        }
+
+        .customer-form label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 0.68rem;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+        }
+
+        .customer-form input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border: 1px solid #c9c2b8;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            background: #f4f0e8;
+
+            color: #292724;
+
+            font-size: 0.92rem;
+
+            transition:
+                border-color 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .customer-form input:focus {
+            border-color: #b86f52;
+
+            background: #ffffff;
+        }
+
+        .customer-form small {
+            display: block;
+
+            margin-top: 7px;
+
+            font-size: 0.68rem;
+
+            color: #99948c;
+        }
+
+
+        /* =====================================================
+           CONFIRM BUTTON
+           ===================================================== */
+
+        .confirm-button {
+            width: 100%;
+
+            min-height: 54px;
+
+            padding: 15px 20px;
+
+            border: 1px solid #292724;
+
+            border-radius: 0;
+
+            background: #292724;
+
+            color: #ffffff;
+
+            font-size: 0.68rem;
+
+            font-weight: 500;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .confirm-button:hover {
+            background: #b86f52;
+
+            border-color: #b86f52;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           WAITING STATUS
+           ===================================================== */
+
+        .payment-status {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            background: #e5dccb;
+
+            border-left: 3px solid #b86f52;
+
+            font-size: 0.82rem;
+
+            color: #5e5851;
+        }
+
+        .payment-status.show {
+            display: block;
+        }
+
+        .payment-status strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-weight: 600;
+
+            color: #292724;
+        }
+
+
+        /* =====================================================
+           SECURITY NOTE
+           ===================================================== */
+
+        .security-note {
+            margin-top: 22px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #d2cbc1;
+
+            font-size: 0.7rem;
+
+            line-height: 1.6;
+
+            color: #99948c;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           SUCCESS BOX
+           ===================================================== */
+
+        .success-box {
+            display: none;
+
+            padding: 28px;
+
+            margin-top: 25px;
+
+            background: #7c8063;
+
+            color: #ffffff;
+
+            text-align: center;
+
+            border-radius: 9px;
+        }
+
+        .success-box.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 45px;
+            height: 45px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(255,255,255,0.6);
+
+            border-radius: 50%;
+
+            font-size: 20px;
+        }
+
+        .success-box h3 {
+            margin: 0 0 7px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 1.7rem;
+
+            font-weight: 400;
+        }
+
+        .success-box p {
+            margin: 0;
+
+            font-size: 0.8rem;
+
+            opacity: 0.8;
+        }
+
+        .download-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+
+            padding: 13px 22px;
+
+            background: #f4f0e8;
+
+            color: #292724;
+
+            font-size: 0.68rem;
+
+            font-weight: 600;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           BACK
+           ===================================================== */
+
+        .back-link {
+            display: inline-block;
+
+            margin-top: 35px;
+
+            padding-bottom: 4px;
+
+            border-bottom: 1px solid #292724;
+
+            font-size: 0.68rem;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+
+            transition:
+                color 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .back-link:hover {
+            color: #b86f52;
+
+            border-color: #b86f52;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        footer {
+            width: 100%;
+
+            padding:
+                45px 5vw;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            background: #292724;
+
+            color: #f4f0e8;
+
+            font-size: 0.72rem;
+        }
+
+        footer strong {
+            font-size: 1.15rem;
+
+            letter-spacing: 0.08em;
+        }
+
+        footer strong span {
+            color: #b86f52;
+        }
+
+        footer p {
+            margin: 6px 0 0;
+
+            opacity: 0.5;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .checkout-page {
+                padding:
+                    65px 6vw
+                    80px;
+            }
+
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-card {
+                position: static;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .site-header {
+                height: 68px;
+
+                padding: 0 5vw;
+            }
+
+            .site-header nav {
+                gap: 13px;
+            }
+
+            .site-header nav a {
+                font-size: 0.55rem;
+
+                letter-spacing: 0.05em;
+            }
+
+            .brand {
+                font-size: 0.95rem;
+            }
+
+
+            .checkout-page {
+                padding:
+                    50px 5vw
+                    70px;
+            }
+
+
+            .checkout-header {
+                margin-bottom: 35px;
+            }
+
+
+            .checkout-header h1 {
+                font-size:
+                    clamp(2.5rem, 13vw, 4rem);
+            }
+
+
+            .checkout-grid {
+                gap: 18px;
+            }
+
+
+            .checkout-card,
+            .payment-card {
+                padding: 22px;
+
+                border-radius: 10px;
+            }
+
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+
+            .info-box.full {
+                grid-column: auto;
+            }
+
+
+            .bank-row {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 4px;
+            }
+
+
+            .bank-row strong {
+                text-align: left;
+            }
+
+
+            .qr-wrapper {
+                width: 220px;
+                height: 220px;
+            }
+
+
+            footer {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                padding:
+                    40px 5vw;
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .site-header nav a:nth-child(3),
+            .site-header nav a:nth-child(4) {
+                display: none;
+            }
+
+            .qr-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="site-header">
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+        ARCHI<span>.</span>
+    </a>
+
+
+    <nav>
+
+        <a href="index.html">
+            HOME
+        </a>
+
+        <a href="document.html">
+            DOCUMENT
+        </a>
+
+        <a href="portfolio.html">
+            PORTFOLIO
+        </a>
+
+        <a href="contact.html">
+            CONTACT
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     CHECKOUT
+     ===================================================== -->
+
+<main class="checkout-page">
+
+    <div class="checkout-container">
+
+
+        <!-- PAGE TITLE -->
+
+        <div class="checkout-header">
+
+            <span class="checkout-label">
+                PLUGIN STORE / CHECKOUT
+            </span>
+
+            <h1>
+                Thanh toán
+            </h1>
+
+            <p id="checkoutHeaderText">Hoàn tất chuyển khoản để nhận plugin.</p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CHECKOUT GRID
+             ================================================= -->
+
+        <div class="checkout-grid">
+
+
+            <!-- =================================================
+                 PRODUCT
+                 ================================================= -->
+
+            <aside class="checkout-card product-card">
+
+                <div class="product-image">
+
+                    <img
+                        id="checkoutProductImage"
+                        src="ANH-PLUGIN/PLUGIN-1.jpg"
+                        alt="Plugin"
+                    >
+
+                </div>
+
+
+                <span class="product-number">
+                    01 / PLUGIN
+                </span>
+
+
+                <h2 id="checkoutProductName">
+                    Đang tải plugin...
+                </h2>
+
+
+                <p class="product-description" id="checkoutProductDescription">
+
+                    Công cụ tạo Material Board nhanh
+                    dành cho kiến trúc sư và designer.
+
+                </p>
+
+
+               <div class="checkout-price">
+    <span>Giá plugin</span>
+    <strong id="checkoutProductPrice">Đang tải...</strong>
+</div>
+            </aside>
+
+
+
+            <!-- =================================================
+                 PAYMENT
+                 ================================================= -->
+
+            <section class="checkout-card payment-card">
+
+                <h2 class="payment-title">
+                    Chuyển khoản ngân hàng
+                </h2>
+
+                <p class="payment-subtitle">
+                    Sử dụng ứng dụng ngân hàng để quét QR
+                    hoặc chuyển khoản theo thông tin bên dưới.
+                </p>
+
+
+
+                <!-- ORDER -->
+
+                <div class="order-info">
+
+                    <div class="info-box">
+
+                        <span>
+                            Sản phẩm
+                        </span>
+
+                        <strong id="checkoutOrderProductName">
+                            Đang tải plugin...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+    <span>
+        Số tiền
+    </span>
+
+    <strong id="checkoutTransferAmount">
+        Đang tải...
+    </strong>
+
+</div>
+
+
+                    <div class="info-box full">
+
+                        <span>
+                            Mã đơn hàng
+                        </span>
+
+                        <strong id="orderId">
+                            Đang tạo...
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BANK -->
+
+                <span class="payment-section-label">
+                    THÔNG TIN CHUYỂN KHOẢN
+                </span>
+
+
+                <div class="bank-details">
+
+
+                    <div class="bank-row">
+
+                        <span>
+                            Ngân hàng
+                        </span>
+
+                        <strong>
+                            MB BANK
+                        </strong>
+
+                    </div>
+
+
+                    <div class="bank-row">
+
+                        <span>
+                            Số tài khoản
+                        </span>
+
+                        <strong>
+                            0796594720
+                        </strong>
+
+                    </div>
+
+
+                    <div class="bank-row">
+
+                        <span>
+                            Chủ tài khoản
+                        </span>
+
+                        <strong>
+                            LE CONG MINH VUONG
+                        </strong>
+
+                    </div>
+
+
+                   <div class="bank-row">
+
+    <span>
+        Số tiền
+    </span>
+
+    <strong id="bankAmount">
+        Đang tải...
+    </strong>
+
+</div>
+
+
+                </div>
+
+
+
+                <!-- TRANSFER CONTENT -->
+
+                <div class="transfer-content">
+
+                    <span>
+                        Nội dung chuyển khoản
+                    </span>
+
+                    <strong id="transferContent">
+                        ARCHI-LOADING
+                    </strong>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     QR
+                     ================================================= -->
+
+                <div class="qr-section">
+
+                    <p>
+                        Quét mã QR bằng ứng dụng ngân hàng
+                    </p>
+
+
+                    <div class="qr-wrapper">
+
+                        <img
+                            id="vietQr"
+                            src=""
+                            alt="QR thanh toán MB Bank"
+                        >
+
+                    </div>
+
+
+                    <p class="qr-note">
+                        QR đã bao gồm số tiền và nội dung chuyển khoản.
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CUSTOMER EMAIL
+                     ================================================= -->
+
+                <div class="customer-form">
+
+                    <label for="customerEmail">
+                        Email nhận thông tin đơn hàng
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="customerEmail"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                    >
+
+
+                    <small>
+                        Email này sẽ được dùng để gửi thông tin
+                        đơn hàng sau khi thanh toán được xác nhận.
+                    </small>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CONFIRM
+                     ================================================= -->
+
+                <button
+                    type="button"
+                    class="confirm-button"
+                    id="confirmButton"
+                >
+                    TÔI ĐÃ CHUYỂN KHOẢN
+                </button>
+
+
+                <div
+                    class="payment-status"
+                    id="paymentStatus"
+                >
+
+                    <strong>
+                        Đã ghi nhận yêu cầu.
+                    </strong>
+
+                    Hệ thống đang chờ xác nhận giao dịch.
+                    Sau khi thanh toán được xác nhận,
+                    nút tải plugin sẽ được mở.
+
+                </div>
+
+
+                <!-- SUCCESS -->
+
+                <div
+                    class="success-box"
+                    id="successBox"
+                >
+
+                    <div class="success-icon">
+                        ✓
+                    </div>
+
+
+                    <h3>
+                        Thanh toán thành công
+                    </h3>
+
+
+                    <p id="checkoutSuccessText">
+                        Bạn đã có quyền tải plugin.
+                    </p>
+
+
+                    <a
+                        href="#"
+                        class="download-button"
+                        id="downloadButton"
+                    >
+                        TẢI PLUGIN
+                    </a>
+
+                </div>
+
+
+                <p class="security-note">
+
+                    Không tải file từ nguồn khác.
+                    Link tải chính thức sẽ chỉ được
+                    cấp sau khi hệ thống xác nhận thanh toán.
+
+                </p>
+
+            </section>
+
+        </div>
+
+
+
+        <a
+            href="plugin-1.html"
+            class="back-link"
+        >
+            ← QUAY LẠI TRANG PLUGIN
+        </a>
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <div>
+
+        <strong>
+            ARCHI<span>.</span>
+        </strong>
+
+        <p>
+            Architecture · Design · Digital Tools
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/script.js"></script>
+<script>
+/* ============================================================
+   ARCHI CHECKOUT - PRODUCT DATA FROM SUPABASE
+
+   SECURITY RULE:
+   localStorage chỉ chứa selectedProductSlug.
+   KHÔNG tin name/price/amount từ localStorage.
+   Giá chính thức luôn lấy từ products.price.
+
+   SUPABASE CONFIG:
+   - Nếu js/script.js của bạn đã tạo window.supabaseClient, code
+     sẽ dùng lại client đó.
+   - Nếu chưa, đặt SUPABASE_URL và SUPABASE_ANON_KEY bên dưới
+     bằng URL + anon/public key của project Supabase.
+   - KHÔNG đặt service_role key trong frontend.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    const SUPABASE_URL = window.SUPABASE_URL || '';
+    const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || '';
+
+    let supabaseClient = window.supabaseClient || null;
+
+    if (!supabaseClient && SUPABASE_URL && SUPABASE_ANON_KEY) {
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+            supabaseClient = window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+        }
+    }
+
+    function formatPrice(value) {
+        const amount = Number(value);
+        if (!Number.isFinite(amount) || amount < 0) return '0 ₫';
+        return new Intl.NumberFormat('vi-VN').format(amount) + ' ₫';
+    }
+
+    function createOrderCode() {
+        const random = Math.random()
+            .toString(36)
+            .substring(2, 8)
+            .toUpperCase();
+        return 'ARCHI-' + random;
+    }
+
+    async function initCheckout() {
+        const slug = localStorage.getItem('selectedProductSlug');
+
+        if (!slug) {
+            alert('Không tìm thấy sản phẩm. Vui lòng chọn plugin lại.');
+            window.location.href = 'documents.html';
+            return;
+        }
+
+        if (!supabaseClient) {
+            console.error('Supabase client chưa được cấu hình.');
+            alert('Chưa kết nối được Supabase. Hãy kiểm tra SUPABASE_URL / SUPABASE_ANON_KEY hoặc window.supabaseClient.');
+            return;
+        }
+
+        // Lấy sản phẩm bằng SLUG; không lấy giá từ localStorage.
+        const { data: product, error: productError } = await supabaseClient
+            .from('products')
+            .select('id, name, slug, price, version, download_url')
+            .eq('slug', slug)
+            .single();
+
+        if (productError || !product) {
+            console.error('Không tìm thấy product:', productError);
+            alert('Sản phẩm không tồn tại hoặc đã ngừng bán.');
+            window.location.href = 'documents.html';
+            return;
+        }
+
+        const amount = Number(product.price);
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+            alert('Giá sản phẩm trong Supabase không hợp lệ.');
+            return;
+        }
+
+        // Hiển thị tên + giá thật từ Supabase.
+        const productName = document.getElementById('checkoutProductName');
+        const orderProductName = document.getElementById('checkoutOrderProductName');
+        const productPrice = document.getElementById('checkoutProductPrice');
+        const transferAmount = document.getElementById('checkoutTransferAmount');
+        const bankAmount = document.getElementById('bankAmount');
+        const productImage = document.getElementById('checkoutProductImage');
+        const productDescription = document.getElementById('checkoutProductDescription');
+        const checkoutHeaderText = document.getElementById('checkoutHeaderText');
+
+        if (productName) productName.textContent = product.name;
+        if (orderProductName) orderProductName.textContent = product.name;
+        if (productPrice) productPrice.textContent = formatPrice(amount);
+        if (transferAmount) transferAmount.textContent = formatPrice(amount);
+        if (bankAmount) bankAmount.textContent = formatPrice(amount);
+
+        if (productDescription) {
+            productDescription.textContent =
+                product.description || 'Plugin dành cho quy trình thiết kế.';
+        }
+
+        if (checkoutHeaderText) {
+            checkoutHeaderText.textContent =
+                'Hoàn tất chuyển khoản để nhận ' + product.name + '.';
+        }
+
+        /*
+         * Ảnh sản phẩm:
+         * - Ưu tiên image_url nếu sau này bạn thêm cột này trong products.
+         * - Hiện tại Scene Manager dùng đúng ảnh đang có ở documents.html.
+         */
+        const productImages = {
+            'scene-manager-pro': 'ANH-PLUGIN/PLUGIN-1.jpg',
+            'plugin-architecture-tools': 'ANH-PLUGIN/PLUGIN-1.jpg',
+            'd5-workflow-tools': 'ANH-PLUGIN/PLUGIN-1.jpg'
+        };
+
+        if (productImage) {
+            productImage.src =
+                productImages[product.slug] ||
+                'ANH-PLUGIN/PLUGIN-1.jpg';
+
+            productImage.alt =
+                product.name || 'Plugin';
+        }
+
+        const successText =
+            document.getElementById("checkoutSuccessText");
+
+        const downloadButton =
+            document.getElementById("downloadButton");
+
+        if (successText) {
+            successText.textContent =
+                "Bạn đã có quyền tải " +
+                product.name +
+                " sau khi thanh toán được xác nhận.";
+        }
+
+        // Do not expose download_url before payment in production.
+        // The paid-license flow should enable the final download securely.
+        if (downloadButton) {
+            downloadButton.dataset.productId =
+                product.id;
+            downloadButton.dataset.productSlug =
+                product.slug;
+        }
+
+        // Mã đơn dùng cho nội dung chuyển khoản.
+        const orderCode = createOrderCode();
+        const orderIdElement = document.getElementById('orderId');
+        const transferContent = document.getElementById('transferContent');
+        if (orderIdElement) orderIdElement.textContent = orderCode;
+        if (transferContent) transferContent.textContent = orderCode;
+
+        // VietQR: amount lấy trực tiếp từ products.price.
+        const bankBin = '970422';
+        const accountNumber = '0796594720';
+        const accountName = 'LE CONG MINH VUONG';
+
+        const qrUrl =
+            'https://img.vietqr.io/image/'
+            + bankBin + '-'
+            + accountNumber
+            + '-compact2.png'
+            + '?amount=' + encodeURIComponent(amount)
+            + '&addInfo=' + encodeURIComponent(orderCode)
+            + '&accountName=' + encodeURIComponent(accountName);
+
+        const vietQr = document.getElementById('vietQr');
+        if (vietQr) {
+            vietQr.src = qrUrl;
+            vietQr.alt = 'QR thanh toán ' + product.name;
+        }
+
+        const confirmButton = document.getElementById('confirmButton');
+        const paymentStatus = document.getElementById('paymentStatus');
+
+        if (confirmButton) {
+            confirmButton.addEventListener('click', async function () {
+                const emailInput = document.getElementById('customerEmail');
+                const email = emailInput ? emailInput.value.trim() : '';
+
+                if (!email) {
+                    alert('Vui lòng nhập email để nhận thông tin đơn hàng.');
+                    if (emailInput) emailInput.focus();
+                    return;
+                }
+
+                const { data: { user } = { user: null } } =
+                    await supabaseClient.auth.getUser();
+
+                if (!user) {
+                    alert('Vui lòng đăng nhập trước khi thanh toán.');
+                    return;
+                }
+
+                /*
+                 * CHƯA đánh dấu PAID ở frontend.
+                 *
+                 * Quan trọng: amount bên dưới chỉ là dữ liệu hiển thị.
+                 * Khi triển khai INSERT orders, backend/RPC phải tự đọc
+                 * products.price theo product.id và tự gán orders.amount.
+                 * Không nhận amount từ request của trình duyệt.
+                 */
+
+                if (paymentStatus) paymentStatus.classList.add('show');
+                confirmButton.disabled = true;
+                confirmButton.textContent = 'ĐANG CHỜ XÁC NHẬN...';
+
+                console.log('Checkout ready:', {
+                    user_id: user.id,
+                    product_id: product.id,
+                    product_slug: product.slug,
+                    amount_from_database: amount,
+                    order_code: orderCode,
+                    email
+                });
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initCheckout);
+})();
+</script>
+</body>
+
+</html>

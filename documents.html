@@ -2,25 +2,36 @@
 <html lang="vi">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCTZKC4E77"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+    <!-- ================= GOOGLE ANALYTICS ================= -->
 
-    gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCTZKC4E77"></script>
 
-    gtag('config', 'G-ZCTZKC4E77');
-</script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-ZCTZKC4E77');
+    </script>
+
+
+    <!-- ================= BASIC ================= -->
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Tài liệu — ARCHITECT</title>
+
+
+    <!-- ================= FONTS ================= -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -32,45 +43,74 @@
     >
 
 
+    <!-- ================= CSS ================= -->
+
     <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
 
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             margin: 0;
+            padding: 0;
+
             background: #f4f0e8;
             color: #20201e;
+
             font-family: "DM Sans", sans-serif;
+
+            line-height: 1.6;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
         }
 
 
-        /* ================= HEADER ================= */
+        /* =====================================================
+           HEADER
+        ===================================================== */
 
         .site-header {
+
+            width: 100%;
             height: 80px;
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             padding: 0 50px;
 
             background: #bcbab5;
+
+            position: relative;
+            z-index: 100;
         }
 
 
         .brand {
+
             text-decoration: none;
 
             color: #111;
 
             font-size: 20px;
-
             font-weight: 500;
 
             letter-spacing: 0.08em;
@@ -83,13 +123,16 @@
 
 
         .site-header nav {
+
             display: flex;
+            align-items: center;
 
             gap: 30px;
         }
 
 
         .site-header nav a {
+
             text-decoration: none;
 
             color: #555;
@@ -99,10 +142,18 @@
             text-transform: uppercase;
 
             letter-spacing: 0.08em;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .site-header nav a:hover {
+            color: #111;
         }
 
 
         .site-header nav a.active {
+
             color: #111;
 
             border-bottom: 1px solid #a97858;
@@ -112,18 +163,35 @@
 
 
         .menu-toggle {
+
             display: none;
+
+            border: none;
+
+            background: transparent;
+
+            padding: 5px;
+
+            color: #111;
+
+            font-size: 24px;
+
+            cursor: pointer;
         }
 
 
-        /* ================= HERO ================= */
+        /* =====================================================
+           HERO
+        ===================================================== */
 
         .page-hero {
+
             padding: 105px 5% 90px;
         }
 
 
         .eyebrow {
+
             margin: 0 0 25px;
 
             font-size: 13px;
@@ -135,6 +203,7 @@
 
 
         .page-hero h1 {
+
             margin: 0;
 
             font-family: "Playfair Display", serif;
@@ -153,7 +222,10 @@
 
 
         .page-lead {
-            margin-top: 30px;
+
+            max-width: 650px;
+
+            margin: 30px 0 0;
 
             font-size: 17px;
 
@@ -162,18 +234,16 @@
 
 
         /* =====================================================
-           RESOURCE LIBRARY
-           ===================================================== */
+           DOCUMENT LIBRARY
+        ===================================================== */
 
         .document-library {
 
             width: 100%;
 
-            padding: 20px 5% 120px;
+            padding: 20px 5% 100px;
         }
 
-
-        /* 3 CỘT */
 
         .document-grid {
 
@@ -185,23 +255,26 @@
 
             display: grid;
 
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
 
             gap: 24px;
         }
 
 
         /* =====================================================
-           Ô TÀI LIỆU
-           ===================================================== */
+           DOCUMENT CARD
+        ===================================================== */
 
         .document-card {
+
+            min-height: 260px;
 
             display: flex;
 
             flex-direction: column;
 
-            min-height: 260px;
+            justify-content: flex-start;
 
             padding: 30px;
 
@@ -215,11 +288,13 @@
 
             color: #20201e;
 
-            transition: all 0.25s ease;
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
         }
 
-
-        /* HOVER */
 
         .document-card:hover {
 
@@ -228,10 +303,11 @@
             background: #ddd8cf;
 
             border-color: #bdb7ad;
+
+            box-shadow:
+                0 12px 30px rgba(32, 32, 30, 0.08);
         }
 
-
-        /* SỐ */
 
         .document-number {
 
@@ -247,11 +323,9 @@
         }
 
 
-        /* TÊN */
-
         .document-card h2 {
 
-            margin: 0 0 16px;
+            margin: 0;
 
             font-family: "DM Sans", sans-serif;
 
@@ -265,31 +339,338 @@
         }
 
 
-        /* MÔ TẢ */
-
-        .document-card p {
-
-            margin: 0;
-
-            font-size: 15px;
-
-            line-height: 1.6;
-
-            color: #77736c;
-        }
-
-
-        /* TUYỆT ĐỐI KHÔNG CÓ MŨI TÊN */
-
         .document-card::before,
-
         .document-card::after {
 
             content: none !important;
         }
 
 
-        /* ================= FOOTER ================= */
+        /* =====================================================
+           PLUGIN STORE
+        ===================================================== */
+
+        .plugin-store {
+
+            width: 100%;
+
+            padding: 100px 5% 120px;
+
+            background: #ded9d0;
+
+            border-top: 1px solid #d0cbc2;
+        }
+
+
+        .plugin-store-inner {
+
+            width: 100%;
+
+            max-width: 1400px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           PLUGIN STORE HEADING
+        ===================================================== */
+
+        .plugin-store-heading {
+
+            max-width: 700px;
+
+            margin-bottom: 55px;
+        }
+
+
+        .plugin-store-eyebrow {
+
+            margin: 0 0 18px;
+
+            font-size: 13px;
+
+            letter-spacing: 0.18em;
+
+            color: #77736c;
+        }
+
+
+        .plugin-store-heading h2 {
+
+            margin: 0;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(40px, 5vw, 65px);
+
+            font-weight: 400;
+
+            line-height: 1.1;
+
+            color: #20201e;
+        }
+
+
+        .plugin-store-heading > p:last-child {
+
+            max-width: 600px;
+
+            margin: 25px 0 0;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            color: #77736c;
+        }
+
+
+        /* =====================================================
+           PLUGIN GRID
+        ===================================================== */
+
+        .plugin-grid {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 24px;
+        }
+
+
+        /* =====================================================
+           PLUGIN CARD
+        ===================================================== */
+
+        .plugin-card {
+
+            min-width: 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            overflow: hidden;
+
+            background: #f4f0e8;
+
+            border: 1px solid #d0cbc2;
+
+            border-radius: 16px;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        .plugin-card:hover {
+
+            transform: translateY(-6px);
+
+            border-color: #bdb7ad;
+
+            box-shadow:
+                0 18px 40px rgba(32, 32, 30, 0.10);
+        }
+
+
+        /* =====================================================
+           PLUGIN IMAGE
+        ===================================================== */
+
+        .plugin-card-image {
+
+            width: 100%;
+
+            height: 230px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #c9c5be;
+
+            overflow: hidden;
+        }
+
+
+        .plugin-placeholder {
+
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #77736c;
+
+            font-size: 13px;
+
+            letter-spacing: 0.15em;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #d8d4cc 0%,
+                    #c5c1ba 100%
+                );
+        }
+
+
+        /* =====================================================
+           PLUGIN CONTENT
+        ===================================================== */
+
+        .plugin-card-content {
+
+            min-height: 310px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            padding: 28px;
+        }
+
+
+        .plugin-number {
+
+            display: block;
+
+            margin-bottom: 18px;
+
+            font-size: 12px;
+
+            letter-spacing: 0.15em;
+
+            color: #77736c;
+        }
+
+
+        .plugin-card h3 {
+
+            margin: 0 0 15px;
+
+            font-size: 23px;
+
+            line-height: 1.25;
+
+            font-weight: 500;
+
+            color: #20201e;
+        }
+
+
+        .plugin-card-content > p {
+
+            margin: 0;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            color: #77736c;
+        }
+
+
+        /* =====================================================
+           PLUGIN META
+        ===================================================== */
+
+        .plugin-meta {
+
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #d6d1c8;
+
+            font-size: 12px;
+
+            color: #77736c;
+        }
+
+
+        /* =====================================================
+           PLUGIN BOTTOM
+        ===================================================== */
+
+        .plugin-bottom {
+
+            margin-top: auto;
+
+            padding-top: 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+
+        .plugin-price {
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #20201e;
+
+            white-space: nowrap;
+        }
+
+
+        .plugin-buy-btn {
+
+            border: none;
+
+            padding: 12px 16px;
+
+            background: #282725;
+
+            color: #fff;
+
+            border-radius: 6px;
+
+            font-size: 11px;
+
+            font-weight: 500;
+
+            letter-spacing: 0.08em;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .plugin-buy-btn:hover {
+
+            background: #a97858;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
 
         footer {
 
@@ -302,6 +683,8 @@
             justify-content: space-between;
 
             align-items: flex-start;
+
+            gap: 30px;
 
             background: #282725;
 
@@ -318,12 +701,13 @@
 
 
         footer strong span {
-
             color: #a97858;
         }
 
 
         footer p {
+
+            margin: 10px 0 0;
 
             color: #aaa;
 
@@ -346,19 +730,38 @@
             text-decoration: none;
 
             font-size: 13px;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .footer-links a:hover {
+            color: #fff;
         }
 
 
         /* =====================================================
            TABLET
-           ===================================================== */
+        ===================================================== */
 
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
 
-            .document-grid {
+            .document-grid,
+            .plugin-grid {
 
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
 
+
+            .site-header {
+                padding: 0 30px;
+            }
+
+
+            .page-hero {
+                padding-left: 5%;
+                padding-right: 5%;
             }
 
         }
@@ -366,55 +769,70 @@
 
         /* =====================================================
            MOBILE
-           ===================================================== */
+        ===================================================== */
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
+
+            /* HEADER */
 
             .site-header {
 
-                padding: 0 20px;
+                height: 70px;
 
+                padding: 0 20px;
             }
 
 
             .site-header nav {
-
                 display: none;
-
             }
 
 
             .menu-toggle {
 
                 display: block;
-
-                border: none;
-
-                background: none;
-
-                font-size: 22px;
-
             }
 
 
+            /* HERO */
+
             .page-hero {
 
-                padding: 70px 25px 60px;
+                padding:
+                    70px 20px
+                    55px;
+            }
 
+
+            .eyebrow {
+                margin-bottom: 20px;
             }
 
 
             .page-hero h1 {
 
-                font-size: 48px;
+                font-size:
+                    clamp(42px, 13vw, 55px);
 
+                line-height: 1.05;
             }
 
 
+            .page-lead {
+
+                margin-top: 22px;
+
+                font-size: 15px;
+            }
+
+
+            /* DOCUMENTS */
+
             .document-library {
 
-                padding: 20px 20px 80px;
-
+                padding:
+                    10px 20px
+                    70px;
             }
 
 
@@ -423,55 +841,484 @@
                 grid-template-columns: 1fr;
 
                 gap: 16px;
-
             }
 
 
             .document-card {
 
-                min-height: 220px;
+                min-height: 200px;
 
-                padding: 25px;
+                padding: 24px;
 
+                border-radius: 14px;
             }
 
 
+            .document-number {
+
+                margin-bottom: 45px;
+            }
+
+
+            .document-card h2 {
+                font-size: 20px;
+            }
+
+
+            /* PLUGIN STORE */
+
+            .plugin-store {
+
+                padding:
+                    75px 20px
+                    80px;
+            }
+
+
+            .plugin-store-heading {
+
+                margin-bottom: 40px;
+            }
+
+
+            .plugin-store-heading h2 {
+
+                font-size:
+                    clamp(38px, 11vw, 50px);
+            }
+
+
+            .plugin-store-heading > p:last-child {
+
+                font-size: 15px;
+            }
+
+
+            .plugin-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+            }
+
+
+            .plugin-card {
+
+                border-radius: 14px;
+            }
+
+
+            .plugin-card-image {
+
+                height: 200px;
+            }
+
+
+            .plugin-card-content {
+
+                min-height: 290px;
+
+                padding: 24px;
+            }
+
+
+            .plugin-card h3 {
+
+                font-size: 21px;
+            }
+
+
+            .plugin-bottom {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+
+            .plugin-buy-btn {
+
+                width: 100%;
+            }
+
+
+            /* FOOTER */
+
             footer {
 
-                padding: 35px 25px;
+                padding:
+                    35px 20px;
 
                 flex-direction: column;
 
                 gap: 25px;
+            }
 
+
+            .footer-links {
+
+                gap: 20px;
+
+                flex-wrap: wrap;
             }
 
         }
 
+
+        /* =====================================================
+           VERY SMALL PHONE
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .page-hero h1 {
+                font-size: 40px;
+            }
+
+
+            .plugin-card-image {
+                height: 180px;
+            }
+
+
+            .plugin-card-content {
+                padding: 20px;
+            }
+
+
+            .plugin-price {
+                font-size: 17px;
+            }
+
+        }
+
+    
+        /* =====================================================
+           PLUGIN CARDS — COMPACT / VỪA MẮT
+        ===================================================== */
+
+        .plugin-grid {
+            max-width: 1050px;
+            margin: 0 auto;
+            gap: 18px;
+        }
+
+        .plugin-card {
+            border-radius: 12px;
+        }
+
+        .plugin-card-image {
+            width: 100%;
+            height: 150px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #c9c5be;
+        }
+
+        .plugin-card-image img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .plugin-card-content {
+            min-height: 220px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plugin-card-content .plugin-number {
+            margin-bottom: 12px;
+            font-size: 10px;
+        }
+
+        .plugin-card-content h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            line-height: 1.25;
+        }
+
+        .plugin-card-content > p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .plugin-card-content .plugin-meta {
+            margin-top: 14px;
+            padding-top: 12px;
+            font-size: 10px;
+        }
+
+        .plugin-card-content .plugin-bottom {
+            margin-top: auto;
+            padding-top: 16px;
+            gap: 10px;
+        }
+
+        .plugin-card-content .plugin-price {
+            font-size: 15px;
+        }
+
+        .plugin-card-content .plugin-buy-btn {
+            padding: 9px 12px;
+            font-size: 9px;
+        }
+
+        @media (max-width: 1000px) {
+            .plugin-grid {
+                max-width: 760px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .plugin-grid {
+                max-width: none;
+            }
+
+            .plugin-card-image {
+                height: 170px;
+            }
+
+            .plugin-card-content {
+                min-height: 210px;
+                padding: 20px;
+            }
+        }
+
+    
+
+        /* =====================================================
+           FIX FINAL - 3 PLUGIN CARD CÙNG KÍCH THƯỚC
+        ===================================================== */
+
+        #plugin-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: stretch;
+        }
+
+        #plugin-grid > .plugin-card {
+            height: 100%;
+            min-height: 390px;
+        }
+
+        #plugin-grid > .plugin-card .plugin-card-image {
+            height: 150px;
+            flex: 0 0 150px;
+        }
+
+        #plugin-grid > .plugin-card .plugin-card-content {
+            flex: 1;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #plugin-grid > .plugin-card .plugin-bottom {
+            margin-top: auto;
+        }
+
+        @media (max-width: 1000px) {
+            #plugin-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            #plugin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
     </style>
 
-</head>
 
+<style id="documents-auth-modal-style">
+    .auth-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(20, 20, 18, 0.52);
+        backdrop-filter: blur(8px);
+    }
+
+    .auth-modal.show {
+        display: flex;
+    }
+
+    .auth-dialog {
+        position: relative;
+        width: min(440px, 100%);
+        max-height: calc(100vh - 48px);
+        overflow-y: auto;
+        padding: 34px;
+        border: 1px solid #d9d3c7;
+        border-radius: 18px;
+        background: #f7f4ec;
+        color: #201f1b;
+        box-shadow: 0 24px 80px rgba(0,0,0,.22);
+    }
+
+    .auth-close {
+        position: absolute;
+        top: 15px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 50%;
+        background: #e9e4d9;
+        color: #201f1b;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .auth-eyebrow {
+        margin: 0 0 10px;
+        color: #8b8579;
+        font-size: 11px;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .auth-title {
+        margin: 0 0 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 1.05;
+    }
+
+    .auth-subtitle {
+        margin: 0 0 24px;
+        color: #777166;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .auth-form {
+        display: grid;
+        gap: 14px;
+    }
+
+    .auth-form label {
+        display: grid;
+        gap: 7px;
+        color: #5f5a50;
+        font-size: 12px;
+        letter-spacing: .04em;
+    }
+
+    .auth-form input {
+        width: 100%;
+        border: 1px solid #d5cfc3;
+        border-radius: 10px;
+        padding: 13px 14px;
+        background: #fff;
+        color: #201f1b;
+        outline: none;
+    }
+
+    .auth-form input:focus {
+        border-color: #201f1b;
+    }
+
+    .auth-submit {
+        width: 100%;
+        margin-top: 4px;
+        border: 0;
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: #201f1b;
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .auth-submit:disabled {
+        opacity: .65;
+        cursor: wait;
+    }
+
+    .auth-message {
+        min-height: 20px;
+        margin: 3px 0 0;
+        color: #a43838;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .auth-message.success {
+        color: #157a55;
+    }
+
+    .auth-switch {
+        margin: 20px 0 0;
+        color: #777166;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .auth-switch button {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #201f1b;
+        font: inherit;
+        font-weight: 700;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    @media (max-width: 560px) {
+        .auth-dialog {
+            padding: 28px 20px 24px;
+        }
+
+        .auth-title {
+            font-size: 30px;
+        }
+    }
+</style>
+
+</head>
 
 
 <body>
 
 
-    <!-- ================= HEADER ================= -->
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
 
     <header class="site-header">
 
-        <a class="brand" href="index.html">
-
+        <a
+            class="brand"
+            href="index.html"
+        >
             ARCHITECT<span>.</span>
-
         </a>
 
 
-        <button class="menu-toggle">
-
+        <button
+            class="menu-toggle"
+            type="button"
+            aria-label="Mở menu"
+        >
             ☰
-
         </button>
 
 
@@ -481,19 +1328,35 @@
                 Trang chủ
             </a>
 
-            <a href="about.html">
+
+            <a
+                href="about.html"
+                class="nav-link-guest-only"
+            >
                 Về tôi
             </a>
 
-            <a href="projects.html">
+
+            <a
+                href="projects.html"
+                class="nav-link-guest-only"
+            >
                 Công trình
             </a>
 
-            <a href="documents.html" class="active">
+
+            <a
+                href="documents.html"
+                class="active"
+            >
                 Tài liệu
             </a>
 
-            <a href="contact.html">
+
+            <a
+                href="contact.html"
+                class="nav-link-guest-only"
+            >
                 Liên hệ
             </a>
 
@@ -503,10 +1366,14 @@
 
 
 
-    <!-- ================= MAIN ================= -->
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
 
     <main>
 
+
+        <!-- ================= HERO ================= -->
 
         <section class="page-hero">
 
@@ -529,10 +1396,11 @@
 
 
 
-        <!-- ================= DOCUMENTS ================= -->
+        <!-- =================================================
+             DOCUMENT LIBRARY
+        ================================================= -->
 
         <section class="document-library">
-
 
             <div class="document-grid">
 
@@ -554,7 +1422,6 @@
                         PHẦN MỀM
                     </h2>
 
-                   
                 </a>
 
 
@@ -575,8 +1442,6 @@
                     <h2>
                         MAP VẬT LIỆU
                     </h2>
-
-                    
 
                 </a>
 
@@ -599,8 +1464,6 @@
                         PLUGIN
                     </h2>
 
-                    
-
                 </a>
 
 
@@ -622,7 +1485,6 @@
                         LUTS MÀU D5
                     </h2>
 
-                   
                 </a>
 
 
@@ -643,8 +1505,6 @@
                     <h2>
                         IES ĐÈN
                     </h2>
-
-                   
 
                 </a>
 
@@ -667,8 +1527,6 @@
                         HDRI
                     </h2>
 
-                   
-
                 </a>
 
 
@@ -690,7 +1548,6 @@
                         TV REVIT
                     </h2>
 
-                    
                 </a>
 
 
@@ -711,8 +1568,6 @@
                     <h2>
                         TV CAD
                     </h2>
-
-                   
 
                 </a>
 
@@ -735,10 +1590,195 @@
                         PRESET MÀU ẢNH
                     </h2>
 
-                   
-
                 </a>
 
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PLUGIN STORE
+        ================================================= -->
+
+        <section
+            class="plugin-store"
+            id="plugin-store"
+        >
+
+            <div class="plugin-store-inner">
+
+
+                <!-- HEADING -->
+
+                <div class="plugin-store-heading">
+
+                    <p class="plugin-store-eyebrow">
+                        PLUGIN STORE
+                    </p>
+
+
+                    <h2>
+                        Plugin - thư viện dành cho kiến trúc sư.
+                    </h2>
+                
+
+                    <p>
+                        Các công cụ được phát triển để hỗ trợ
+                        quá trình thiết kế và làm việc hiệu quả và nhanh chóng hơn.
+                    </p>
+                
+
+                </div>
+
+
+
+                <!-- PLUGIN GRID -->
+
+                <div
+                    class="plugin-grid"
+                    id="plugin-grid"
+                >
+
+                    <!-- =====================================
+                         PLUGIN 01
+                    ====================================== -->
+                    <article class="plugin-card" data-product-slug="scene-manager-pro">
+
+                        <div class="plugin-card-image">
+                            <img
+                                src="ANH-PLUGIN/PLUGIN-1.jpg"
+                                alt="Scene Manager MV"
+                            >
+                        </div>
+
+                        <div class="plugin-card-content">
+
+                            <span class="plugin-number">
+                                01 / PLUGIN
+                            </span>
+
+                            <h3>
+                                SCENE MANAGER MV
+                            </h3>
+
+                            <p>
+                                Công cụ giúp quản lý scene nhanh trong SketchUp,
+                                tạo scene theo tỉ lệ khung hình và xuất scene hàng loạt.
+                            </p>
+
+                            <div class="plugin-bottom">
+                                <span class="price">
+                                    <span class="dynamic-product-price" data-price-for="scene-manager-pro">Đang tải...</span>
+                                </span>
+
+                                <a
+                                    href="plugin-1.html"
+                                    class="buy-button"
+                                    onclick="saveSelectedProduct(event, this)"
+                                >
+                                    XEM CHI TIẾT
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =====================================
+                         PLUGIN 02
+                    ====================================== -->
+                    <article class="plugin-card" data-product-slug="material-map-exporter-pro">
+
+                        <div class="plugin-card-image">
+                            <img
+                                src="ANH-PLUGIN/plugin-2.jpg"
+                                alt="Plugin 02"
+                            >
+                        </div>
+
+                        <div class="plugin-card-content">
+
+                            <span class="plugin-number">
+                                02 / PLUGIN
+                            </span>
+
+                            <h3>
+                                PLUGIN 02
+                            </h3>
+
+                            <p>
+                                Công cụ hỗ trợ quy trình thiết kế và làm việc
+                                hiệu quả hơn cho kiến trúc sư.
+                            </p>
+
+                            <div class="plugin-bottom">
+                                <span class="price">
+                                    <span class="dynamic-product-price" data-price-for="material-map-exporter-pro">Đang tải...</span>
+                                </span>
+
+                                <a
+                                    href="plugin-1.html"
+                                    class="buy-button"
+                                    onclick="saveSelectedProduct(event, this)"
+                                >
+                                    XEM CHI TIẾT
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =====================================
+                         PLUGIN 03
+                    ====================================== -->
+                    <article class="plugin-card" data-product-slug="plugin-3">
+
+                        <div class="plugin-card-image">
+                            <img
+                                src="ANH-PLUGIN/plugin-3.jpg"
+                                alt="Plugin 03"
+                            >
+                        </div>
+
+                        <div class="plugin-card-content">
+
+                            <span class="plugin-number">
+                                03 / PLUGIN
+                            </span>
+
+                            <h3>
+                                PLUGIN 03
+                            </h3>
+
+                            <p>
+                                Công cụ hỗ trợ tối ưu quy trình làm việc
+                                và quản lý tài nguyên trong dự án.
+                            </p>
+
+                            <div class="plugin-bottom">
+                                <span class="price">
+                                    <span class="dynamic-product-price" data-price-for="plugin-3">Đang tải...</span>
+                                </span>
+
+                                <a
+                                    href="plugin-1.html"
+                                    class="buy-button"
+                                    onclick="saveSelectedProduct(event, this)"
+                                >
+                                    XEM CHI TIẾT
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
 
             </div>
 
@@ -748,15 +1788,19 @@
 
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
 
     <footer>
+
 
         <div>
 
             <strong>
                 ARCHITECT<span>.</span>
             </strong>
+
 
             <p>
                 Architecture · Interior · Exterior
@@ -765,11 +1809,13 @@
         </div>
 
 
+
         <div class="footer-links">
 
             <a href="projects.html">
                 Công trình
             </a>
+
 
             <a href="contact.html">
                 Liên hệ
@@ -778,12 +1824,488 @@
         </div>
 
 
+
         <p>
             © 2026 — Personal Portfolio
         </p>
 
+
     </footer>
 
+
+
+    <!-- =====================================================
+         SUPABASE
+    ===================================================== -->
+
+    
+<!-- =====================================================
+     AUTH MODAL - required before viewing plugin details
+     ===================================================== -->
+<div
+    class="auth-modal"
+    id="auth-modal"
+    aria-hidden="true"
+>
+    <div
+        class="auth-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-dialog-title"
+    >
+        <button
+            type="button"
+            class="auth-close"
+            id="auth-close"
+            aria-label="Đóng"
+        >
+            ×
+        </button>
+
+        <div id="login-view">
+            <p class="auth-eyebrow">PLUGIN STORE / ACCOUNT</p>
+
+            <h2
+                class="auth-title"
+                id="auth-dialog-title"
+            >
+                Đăng nhập
+            </h2>
+
+            <p class="auth-subtitle">
+                Bạn cần đăng nhập hoặc đăng ký tài khoản trước khi xem chi tiết plugin.
+            </p>
+
+            <form
+                class="auth-form"
+                id="login-form"
+            >
+                <label>
+                    Email
+                    <input
+                        type="email"
+                        id="login-email"
+                        autocomplete="email"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Mật khẩu
+                    <input
+                        type="password"
+                        id="login-password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </label>
+
+                <p
+                    class="auth-message"
+                    id="login-message"
+                ></p>
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="login-submit"
+                >
+                    Đăng nhập
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Chưa có tài khoản?
+                <button
+                    type="button"
+                    id="show-register"
+                >
+                    Đăng ký
+                </button>
+            </p>
+        </div>
+
+        <div
+            id="register-view"
+            style="display:none;"
+        >
+            <p class="auth-eyebrow">PLUGIN STORE / ACCOUNT</p>
+
+            <h2 class="auth-title">
+                Đăng ký
+            </h2>
+
+            <p class="auth-subtitle">
+                Tạo tài khoản để mua và quản lý plugin của bạn.
+            </p>
+
+            <form
+                class="auth-form"
+                id="register-form"
+            >
+                <label>
+                    Họ và tên
+                    <input
+                        type="text"
+                        id="register-name"
+                        autocomplete="name"
+                    >
+                </label>
+
+                <label>
+                    Email
+                    <input
+                        type="email"
+                        id="register-email"
+                        autocomplete="email"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Mật khẩu
+                    <input
+                        type="password"
+                        id="register-password"
+                        autocomplete="new-password"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Nhập lại mật khẩu
+                    <input
+                        type="password"
+                        id="register-password-confirm"
+                        autocomplete="new-password"
+                        required
+                    >
+                </label>
+
+                <p
+                    class="auth-message"
+                    id="register-message"
+                ></p>
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="register-submit"
+                >
+                    Đăng ký
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Đã có tài khoản?
+                <button
+                    type="button"
+                    id="show-login"
+                >
+                    Đăng nhập
+                </button>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+    <!-- =====================================================
+         MAIN JAVASCRIPT
+    ===================================================== -->
+
+    <script src="js/script.js"></script>
+<script>
+/*
+ * documents.html -> plugin-1.html
+ *
+ * CHỈ truyền product slug.
+ * KHÔNG truyền name/price qua localStorage.
+ * Giá thật sẽ được checkout lấy từ Supabase: products.price
+ */
+
+async function loadPluginStoreProducts() {
+    const client =
+        window.supabaseClient || null;
+
+    if (!client) {
+        console.error(
+            "Supabase client chưa sẵn sàng để tải giá plugin."
+        );
+        return;
+    }
+
+    const cards = Array.from(
+        document.querySelectorAll(
+            ".plugin-card[data-product-slug]"
+        )
+    );
+
+    const slugs = [
+        ...new Set(
+            cards
+                .map(card =>
+                    card.dataset.productSlug?.trim()
+                )
+                .filter(Boolean)
+        )
+    ];
+
+    if (!slugs.length) return;
+
+    const {
+        data: products,
+        error
+    } = await client
+        .from("products")
+        .select(
+            "name, slug, price, version, storage_bucket, download_url"
+        )
+        .in("slug", slugs);
+
+    if (error) {
+        console.error(
+            "Không tải được products cho documents:",
+            error
+        );
+        return;
+    }
+
+    const productMap = new Map(
+        (products || []).map(product => [
+            product.slug,
+            product
+        ])
+    );
+
+    const formatPrice = value => {
+        const amount = Number(value);
+
+        if (!Number.isFinite(amount)) {
+            return "—";
+        }
+
+        return new Intl.NumberFormat(
+            "vi-VN"
+        ).format(amount) + " ₫";
+    };
+
+    cards.forEach(card => {
+        const slug =
+            card.dataset.productSlug?.trim();
+
+        const product =
+            productMap.get(slug);
+
+        if (!product) {
+            const priceNode =
+                card.querySelector(
+                    ".dynamic-product-price"
+                );
+
+            if (priceNode) {
+                priceNode.textContent =
+                    "Chưa cấu hình";
+            }
+
+            return;
+        }
+
+        const priceNode =
+            card.querySelector(
+                ".dynamic-product-price"
+            );
+
+        const actionButton =
+            card.querySelector(
+                ".buy-button, .plugin-buy-btn"
+            );
+
+        const isFree =
+            Number(product.price) === 0;
+
+        if (priceNode) {
+            priceNode.textContent =
+                isFree
+                    ? "MIỄN PHÍ"
+                    : formatPrice(product.price);
+        }
+
+        /*
+         * FREE PLUGIN:
+         * - Không cần đăng nhập
+         * - Không order / webhook / license / device
+         * - File phải nằm trong PUBLIC bucket
+         */
+        if (isFree && actionButton) {
+            const bucket =
+                String(
+                    product.storage_bucket || ""
+                ).trim();
+
+            const path =
+                String(
+                    product.download_url || ""
+                )
+                    .trim()
+                    .replace(/^\/+/, "");
+
+            if (bucket && path) {
+                const {
+                    data: publicUrlData
+                } = client.storage
+                    .from(bucket)
+                    .getPublicUrl(path);
+
+                const publicUrl =
+                    publicUrlData?.publicUrl || "";
+
+                if (publicUrl) {
+                    actionButton.textContent =
+                        "TẢI MIỄN PHÍ";
+
+                    actionButton.href =
+                        publicUrl;
+
+                    actionButton.target =
+                        "_blank";
+
+                    actionButton.rel =
+                        "noopener noreferrer";
+
+                    actionButton.dataset.freeDownloadUrl =
+                        publicUrl;
+
+                    actionButton.dataset.freeProduct =
+                        "true";
+                }
+            }
+        } else if (actionButton) {
+            actionButton.textContent =
+                "XEM CHI TIẾT";
+
+            actionButton.dataset.freeProduct =
+                "false";
+
+            delete actionButton.dataset.freeDownloadUrl;
+
+            actionButton.removeAttribute(
+                "target"
+            );
+
+            actionButton.removeAttribute(
+                "rel"
+            );
+        }
+
+        const titleNode =
+            card.querySelector("h3");
+
+        if (titleNode && product.name) {
+            titleNode.textContent =
+                product.name;
+        }
+
+        const versionNode =
+            card.querySelector(
+                ".plugin-meta span"
+            );
+
+        if (
+            versionNode &&
+            product.version
+        ) {
+            versionNode.textContent =
+                "Version " + product.version;
+        }
+    });
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadPluginStoreProducts
+);
+
+async function saveSelectedProduct(event, button) {
+    if (event) event.preventDefault();
+
+    /*
+     * Plugin FREE tải trực tiếp từ Public Storage.
+     * Không yêu cầu Supabase Auth.
+     */
+    const freeDownloadUrl =
+        button?.dataset?.freeDownloadUrl;
+
+    if (freeDownloadUrl) {
+        window.open(
+            freeDownloadUrl,
+            "_blank",
+            "noopener,noreferrer"
+        );
+        return;
+    }
+
+    try {
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getSession();
+
+        if (error) {
+            console.error("Session check error:", error);
+            openAuthModal("login");
+            return;
+        }
+
+        if (!data?.session?.user) {
+            openAuthModal("login");
+
+            setTimeout(() => {
+                if (loginMessage) {
+                    showMessage(
+                        loginMessage,
+                        "Vui lòng đăng nhập hoặc đăng ký tài khoản để xem chi tiết plugin."
+                    );
+                }
+            }, 0);
+
+            return;
+        }
+
+        const card = button.closest(".plugin-card");
+        const productSlug =
+            card?.dataset?.productSlug?.trim();
+
+        if (!productSlug) {
+            console.error(
+                "Plugin card chưa có data-product-slug."
+            );
+            alert(
+                "Sản phẩm này chưa được cấu hình slug."
+            );
+            return;
+        }
+
+        localStorage.setItem(
+            "selectedProductSlug",
+            productSlug
+        );
+
+        localStorage.removeItem("selectedProductId");
+        localStorage.removeItem("selectedPlugin");
+        localStorage.removeItem("pluginPrice");
+
+        window.location.href = "plugin-1.html";
+
+    } catch (error) {
+        console.error("Auth gate error:", error);
+        openAuthModal("login");
+    }
+}
+</script>
 
 </body>
 
