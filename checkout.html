@@ -1895,19 +1895,21 @@
         }
 
         const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("orders")
-                .select(
-                    "id, status, amount, payment_reference"
-                )
-                .eq(
-                    "id",
-                    currentOrder.order_id
-                )
-                .maybeSingle();
+    data,
+    error
+} =
+    await supabaseClient.rpc(
+        "get_my_order_status",
+        {
+            p_order_id:
+                currentOrder.order_id
+        }
+    );
+
+const orderStatus =
+    Array.isArray(data)
+        ? data[0]
+        : data;
 
         if (error) {
             console.error(
@@ -1918,19 +1920,17 @@
             return;
         }
 
-        if (!data) {
-            return;
-        }
+        if (!orderStatus) {
+    return;
+}
 
-        currentOrder.status =
-            data.status;
+currentOrder.status =
+    orderStatus.status;
 
-        if (
-            data.status === "paid"
-        ) {
-            stopPolling();
-            showPaidState();
-        }
+if (orderStatus.status === "paid") {
+    stopPolling();
+    showPaidState();
+}
     }
 
     function startPolling() {
