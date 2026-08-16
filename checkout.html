@@ -1482,11 +1482,12 @@
 <script>
 /* ============================================================
    ARCHI CHECKOUT
-   - Giá CHỈ lấy từ Supabase products.price
-   - Order CHỈ tạo qua RPC public.create_order(product_id)
-   - QR dùng amount + payment_reference THẬT từ order
-   - Không hard-code giá trong frontend
-   - Frontend KHÔNG tự đánh dấu paid
+   - Giá chỉ lấy từ Supabase products.price
+   - Nếu đã có license active: KHÔNG tạo order mới
+   - Nếu chưa có license: reuse pending order cũ nếu có
+   - Chỉ khi không có license + không có pending mới gọi create_order()
+   - QR dùng orders.amount + payment_reference thật
+   - Webhook SePay là nơi duy nhất đổi order -> paid
    ============================================================ */
 (function () {
     "use strict";
@@ -1498,27 +1499,28 @@
 
     let currentProduct = null;
     let currentOrder = null;
+    let currentUser = null;
     let statusTimer = null;
 
     function formatPrice(value) {
         const amount = Number(value);
-
-        if (!Number.isFinite(amount) || amount < 0) {
-            return "0 ₫";
-        }
-
-        return new Intl.NumberFormat(
-            "vi-VN"
-        ).format(amount) + " ₫";
+        if (!Number.isFinite(amount) || amount < 0) return "0 ₫";
+        return new Intl.NumberFormat("vi-VN").format(amount) + " ₫";
     }
 
     function setText(id, value) {
-        const node =
-            document.getElementById(id);
+        const node = document.getElementById(id);
+        if (node) node.textContent = value;
+    }
 
-        if (node) {
-            node.textContent = value;
-        }
+    function setVisible(id, visible) {
+        const node = document.getElementById(id);
+        if (!node) return;
+        node.style.display = visible ? "" : "none";
+    }
+
+    function getOrderRow(data) {
+        return Array.isArray(data) ? (data[0] || null) : (data || null);
     }
 
     function showFatal(message) {
@@ -1526,46 +1528,22 @@
         alert(message);
     }
 
-    function getOrderRow(data) {
-        if (Array.isArray(data)) {
-            return data[0] || null;
-        }
-
-        return data || null;
-    }
-
-    function getCachedOrderKey(productId) {
-        return (
-            "archi_checkout_order_" +
-            String(productId)
-        );
-    }
-
     async function requireSession() {
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.auth
-                .getSession();
+        const { data, error } =
+            await supabaseClient.auth.getSession();
 
-        if (
-            error ||
-            !data?.session?.user
-        ) {
+        if (error || !data?.session?.user) {
             throw new Error(
                 "Bạn cần đăng nhập trước khi thanh toán."
             );
         }
 
+        currentUser = data.session.user;
         return data.session;
     }
 
     async function loadProduct(slug) {
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient
                 .from("products")
                 .select(
@@ -1575,23 +1553,15 @@
                 .single();
 
         if (error || !data) {
-            console.error(
-                "Product lookup error:",
-                error
-            );
-
+            console.error("Product lookup error:", error);
             throw new Error(
                 "Không tìm thấy sản phẩm trong Supabase."
             );
         }
 
-        const price =
-            Number(data.price);
+        const price = Number(data.price);
 
-        if (
-            !Number.isFinite(price) ||
-            price <= 0
-        ) {
+        if (!Number.isFinite(price) || price <= 0) {
             throw new Error(
                 "Giá sản phẩm không hợp lệ cho checkout trả phí."
             );
@@ -1600,77 +1570,70 @@
         return data;
     }
 
-    async function tryReusePendingOrder(
-        product
-    ) {
-        const key =
-            getCachedOrderKey(product.id);
+    async function hasActiveLicense(productId) {
+        const { data, error } =
+            await supabaseClient
+                .from("licenses")
+                .select("id, status, product_id, user_id")
+                .eq("user_id", currentUser.id)
+                .eq("product_id", productId)
+                .eq("status", "active")
+                .limit(1)
+                .maybeSingle();
 
-        const cachedId =
-            sessionStorage.getItem(key);
-
-        if (!cachedId) {
-            return null;
+        if (error) {
+            console.error(
+                "License lookup error:",
+                error
+            );
+            return false;
         }
 
-        const {
-            data,
-            error
-        } =
+        return !!data;
+    }
+
+    async function findExistingPendingOrder(productId) {
+        const { data, error } =
             await supabaseClient
                 .from("orders")
                 .select(
-                    "id, product_id, amount, status, payment_reference"
+                    "id, product_id, amount, status, payment_reference, created_at"
                 )
-                .eq("id", cachedId)
-                .eq(
-                    "product_id",
-                    product.id
-                )
+                .eq("user_id", currentUser.id)
+                .eq("product_id", productId)
+                .eq("status", "pending")
+                .order("created_at", {
+                    ascending: false
+                })
+                .limit(1)
                 .maybeSingle();
 
-        if (
-            error ||
-            !data ||
-            data.status !== "pending" ||
-            Number(data.amount) !==
-                Number(product.price)
-        ) {
-            sessionStorage.removeItem(
-                key
+        if (error) {
+            console.error(
+                "Pending order lookup error:",
+                error
             );
-
             return null;
         }
 
+        if (!data) return null;
+
         return {
             order_id: data.id,
-            product_id:
-                data.product_id,
-            amount:
-                Number(data.amount),
-            status:
-                data.status,
+            product_id: data.product_id,
+            amount: Number(data.amount),
+            status: data.status,
             payment_reference:
                 data.payment_reference
         };
     }
 
     async function createOrder(product) {
-        /*
-         * RPC public.create_order tự đọc products.price
-         * theo product_id.
-         * Frontend KHÔNG gửi amount.
-         */
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient.rpc(
                 "create_order",
                 {
-                    p_product_id:
-                        product.id
+                    p_product_id: product.id
                 }
             );
 
@@ -1679,14 +1642,12 @@
                 "create_order RPC error:",
                 error
             );
-
             throw new Error(
                 "Không tạo được đơn hàng."
             );
         }
 
-        const row =
-            getOrderRow(data);
+        const row = getOrderRow(data);
 
         if (
             !row?.order_id ||
@@ -1696,55 +1657,36 @@
                 "create_order invalid response:",
                 data
             );
-
             throw new Error(
                 "Dữ liệu đơn hàng trả về không hợp lệ."
             );
         }
 
-        const order = {
-            order_id:
-                row.order_id,
-            product_id:
-                row.product_id,
-            amount:
-                Number(row.amount),
-            status:
-                row.status,
+        return {
+            order_id: row.order_id,
+            product_id: row.product_id,
+            amount: Number(row.amount),
+            status: row.status,
             payment_reference:
                 row.payment_reference
         };
-
-        sessionStorage.setItem(
-            getCachedOrderKey(
-                product.id
-            ),
-            order.order_id
-        );
-
-        return order;
     }
 
-    async function getOrCreateOrder(
-        product
-    ) {
-        const reusable =
-            await tryReusePendingOrder(
-                product
+    async function getOrCreateOrder(product) {
+        const pending =
+            await findExistingPendingOrder(
+                product.id
             );
 
-        if (reusable) {
-            return reusable;
+        if (pending) {
+            return pending;
         }
 
-        return await createOrder(
-            product
-        );
+        return await createOrder(product);
     }
 
     function renderProduct(product) {
-        const amount =
-            Number(product.price);
+        const amount = Number(product.price);
 
         setText(
             "checkoutProductName",
@@ -1761,13 +1703,10 @@
             formatPrice(amount)
         );
 
-        const description =
-            product.description ||
-            "Plugin dành cho quy trình thiết kế.";
-
         setText(
             "checkoutProductDescription",
-            description
+            product.description ||
+            "Plugin dành cho quy trình thiết kế."
         );
 
         setText(
@@ -1791,14 +1730,11 @@
 
         if (image) {
             image.src =
-                productImages[
-                    product.slug
-                ] ||
+                productImages[product.slug] ||
                 "ANH-PLUGIN/PLUGIN-1.jpg";
 
             image.alt =
-                product.name ||
-                "Plugin";
+                product.name || "Plugin";
         }
 
         const successText =
@@ -1808,20 +1744,15 @@
 
         if (successText) {
             successText.textContent =
-                "Thanh toán đã được xác nhận. Bạn có thể tải " +
+                "Bạn đã có quyền tải " +
                 product.name +
                 ".";
         }
     }
 
     function renderOrder(order) {
-        const amount =
-            Number(order.amount);
+        const amount = Number(order.amount);
 
-        /*
-         * Từ thời điểm order được tạo,
-         * mọi hiển thị thanh toán dùng orders.amount.
-         */
         setText(
             "checkoutProductPrice",
             formatPrice(amount)
@@ -1847,12 +1778,8 @@
             order.payment_reference
         );
 
-        const bankBin =
-            "970422";
-
-        const accountNumber =
-            "0796594720";
-
+        const bankBin = "970422";
+        const accountNumber = "0796594720";
         const accountName =
             "LE CONG MINH VUONG";
 
@@ -1889,69 +1816,106 @@
         }
     }
 
-    async function checkOrderStatus() {
-        if (!currentOrder?.order_id) {
-            return;
-        }
-
-        const {
-    data,
-    error
-} =
-    await supabaseClient.rpc(
-        "get_my_order_status",
-        {
-            p_order_id:
-                currentOrder.order_id
-        }
-    );
-
-const orderStatus =
-    Array.isArray(data)
-        ? data[0]
-        : data;
-
-        if (error) {
-            console.error(
-                "Order status error:",
-                error
-            );
-
-            return;
-        }
-
-        if (!orderStatus) {
-    return;
-}
-
-currentOrder.status =
-    orderStatus.status;
-
-if (orderStatus.status === "paid") {
-    stopPolling();
-    showPaidState();
-}
-    }
-
-    function startPolling() {
+    function showOwnedState() {
         stopPolling();
 
-        statusTimer =
-            window.setInterval(
-                checkOrderStatus,
-                POLL_INTERVAL_MS
+        setText(
+            "checkoutHeaderText",
+            "Bạn đã sở hữu " +
+                currentProduct.name +
+                "."
+        );
+
+        setText(
+            "orderId",
+            "ĐÃ CÓ LICENSE"
+        );
+
+        setText(
+            "checkoutTransferAmount",
+            "ĐÃ THANH TOÁN"
+        );
+
+        setText(
+            "bankAmount",
+            "—"
+        );
+
+        setText(
+            "transferContent",
+            "KHÔNG CẦN CHUYỂN KHOẢN"
+        );
+
+        const qrSection =
+            document.querySelector(
+                ".qr-section"
             );
 
-        checkOrderStatus();
-    }
-
-    function stopPolling() {
-        if (statusTimer) {
-            clearInterval(
-                statusTimer
+        const bankDetails =
+            document.querySelector(
+                ".bank-details"
             );
 
-            statusTimer = null;
+        const transferBox =
+            document.querySelector(
+                ".transfer-content"
+            );
+
+        const customerForm =
+            document.querySelector(
+                ".customer-form"
+            );
+
+        const confirmButton =
+            document.getElementById(
+                "confirmButton"
+            );
+
+        const paymentStatus =
+            document.getElementById(
+                "paymentStatus"
+            );
+
+        const successBox =
+            document.getElementById(
+                "successBox"
+            );
+
+        if (qrSection) {
+            qrSection.style.display =
+                "none";
+        }
+
+        if (bankDetails) {
+            bankDetails.style.display =
+                "none";
+        }
+
+        if (transferBox) {
+            transferBox.style.display =
+                "none";
+        }
+
+        if (customerForm) {
+            customerForm.style.display =
+                "none";
+        }
+
+        if (confirmButton) {
+            confirmButton.style.display =
+                "none";
+        }
+
+        if (paymentStatus) {
+            paymentStatus.classList.remove(
+                "show"
+            );
+        }
+
+        if (successBox) {
+            successBox.classList.add(
+                "show"
+            );
         }
     }
 
@@ -1973,15 +1937,15 @@ if (orderStatus.status === "paid") {
         }
 
         if (confirmButton) {
-            confirmButton.disabled =
-                true;
-
+            confirmButton.disabled = true;
             confirmButton.textContent =
                 "ĐANG CHỜ XÁC NHẬN...";
         }
     }
 
     function showPaidState() {
+        stopPolling();
+
         const paymentStatus =
             document.getElementById(
                 "paymentStatus"
@@ -2004,9 +1968,7 @@ if (orderStatus.status === "paid") {
         }
 
         if (confirmButton) {
-            confirmButton.disabled =
-                true;
-
+            confirmButton.disabled = true;
             confirmButton.textContent =
                 "ĐÃ XÁC NHẬN THANH TOÁN";
         }
@@ -2018,10 +1980,66 @@ if (orderStatus.status === "paid") {
         }
     }
 
-    async function requestDownload() {
-        if (!currentProduct) {
+    async function checkOrderStatus() {
+        if (!currentOrder?.order_id) {
             return;
         }
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "get_my_order_status",
+                {
+                    p_order_id:
+                        currentOrder.order_id
+                }
+            );
+
+        if (error) {
+            console.error(
+                "Order status RPC error:",
+                error
+            );
+            return;
+        }
+
+        const orderStatus =
+            getOrderRow(data);
+
+        if (!orderStatus) {
+            return;
+        }
+
+        currentOrder.status =
+            orderStatus.status;
+
+        if (
+            orderStatus.status === "paid"
+        ) {
+            showPaidState();
+        }
+    }
+
+    function startPolling() {
+        stopPolling();
+
+        statusTimer =
+            window.setInterval(
+                checkOrderStatus,
+                POLL_INTERVAL_MS
+            );
+
+        checkOrderStatus();
+    }
+
+    function stopPolling() {
+        if (statusTimer) {
+            clearInterval(statusTimer);
+            statusTimer = null;
+        }
+    }
+
+    async function requestDownload() {
+        if (!currentProduct) return;
 
         const session =
             await requireSession();
@@ -2033,8 +2051,7 @@ if (orderStatus.status === "paid") {
             await fetch(
                 functionUrl,
                 {
-                    method:
-                        "POST",
+                    method: "POST",
                     headers: {
                         "Content-Type":
                             "application/json",
@@ -2053,9 +2070,7 @@ if (orderStatus.status === "paid") {
         const payload =
             await response
                 .json()
-                .catch(
-                    () => ({})
-                );
+                .catch(() => ({}));
 
         if (
             !response.ok ||
@@ -2092,25 +2107,17 @@ if (orderStatus.status === "paid") {
                         );
 
                     const email =
-                        emailInput
-                            ?.value
-                            ?.trim() ||
-                        "";
+                        emailInput?.value
+                            ?.trim() || "";
 
                     if (!email) {
                         alert(
                             "Vui lòng nhập email để nhận thông tin đơn hàng."
                         );
-
                         emailInput?.focus();
-
                         return;
                     }
 
-                    /*
-                     * Không tự set paid.
-                     * Webhook SePay mới được quyền xác nhận.
-                     */
                     showWaitingState();
                     startPolling();
                 }
@@ -2132,7 +2139,6 @@ if (orderStatus.status === "paid") {
                         await requestDownload();
                     } catch (error) {
                         console.error(error);
-
                         alert(
                             error?.message ||
                             "Không tải được plugin."
@@ -2176,9 +2182,27 @@ if (orderStatus.status === "paid") {
                 currentProduct
             );
 
+            bindActions();
+
             /*
-             * Order được tạo/reuse trước khi hiện QR.
-             * amount + payment_reference đều lấy từ DB.
+             * QUAN TRỌNG:
+             * Nếu đã có license active -> dừng ở đây.
+             * Không tạo thêm pending order.
+             */
+            const alreadyOwned =
+                await hasActiveLicense(
+                    currentProduct.id
+                );
+
+            if (alreadyOwned) {
+                showOwnedState();
+                return;
+            }
+
+            /*
+             * Chưa có license:
+             * dùng lại pending order nếu đã có,
+             * chỉ tạo mới nếu chưa có pending.
              */
             currentOrder =
                 await getOrCreateOrder(
@@ -2188,8 +2212,6 @@ if (orderStatus.status === "paid") {
             renderOrder(
                 currentOrder
             );
-
-            bindActions();
 
             if (
                 currentOrder.status ===
