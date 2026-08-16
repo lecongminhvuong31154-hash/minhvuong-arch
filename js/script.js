@@ -19,6 +19,8 @@ const supabaseClient = window.supabase.createClient(
         }
     }
 );
+// Cho các trang khác như checkout.html sử dụng Supabase client
+window.supabaseClient = supabaseClient;
 
 
 /* =====================================================
@@ -472,19 +474,49 @@ if (loginForm) {
 
             if (data?.user) {
 
-    showMessage(
-        loginMessage,
-        "Đăng nhập thành công!",
-        "success"
-    );
+                showMessage(
+                    loginMessage,
+                    "Đăng nhập thành công!",
+                    "success"
+                );
 
-    // Kích hoạt / kiểm tra thiết bị
-    await activateCurrentDevice();
+                closeAuthModal();
 
-    setTimeout(() => {
-        closeAuthModal();
-    }, 500);
-}
+                // Kiểm tra role admin ở phía server.
+                // Admin -> admin.html
+                // User thường -> documents.html
+                try {
+                    const {
+                        data: isAdmin,
+                        error: adminCheckError
+                    } = await supabaseClient.rpc(
+                        "is_current_user_admin"
+                    );
+
+                    if (adminCheckError) {
+                        console.error(
+                            "Admin role check error:",
+                            adminCheckError
+                        );
+                    }
+
+                    window.location.href =
+                        isAdmin === true
+                            ? "admin.html"
+                            : "documents.html";
+
+                } catch (adminCheckException) {
+
+                    console.error(
+                        "Admin role check exception:",
+                        adminCheckException
+                    );
+
+                    // Fallback an toàn: user thường vào documents.
+                    window.location.href =
+                        "documents.html";
+                }
+            }
         } catch (error) {
 
             console.error(error);
@@ -612,162 +644,6 @@ const {
                 );
 
                 return;
-             /* =====================================================
-   LICENSE + DEVICE ACTIVATION
-   ===================================================== */
-console.log("✅ File Device đã được load");
-async function activateCurrentDevice() {
-
-    console.log("🚀 activateCurrentDevice đã được gọi");
-
-
-    try {
-
-        // Kiểm tra user đang đăng nhập
-        const {
-            data: userData,
-            error: userError
-        } = await supabaseClient.auth.getUser();
-
-        if (userError || !userData?.user) {
-            console.log(
-                "Chưa đăng nhập, không kích hoạt device."
-            );
-            return;
-        }
-
-        const user = userData.user;
-
-        console.log(
-            "User hiện tại:",
-            user.email
-        );
-
-        // ================================================
-        // Lấy License của user
-        // ================================================
-
-        const {
-            data: licenses,
-            error: licenseError
-        } = await supabaseClient.rpc(
-            "get_my_license"
-        );
-
-        if (licenseError) {
-
-            console.error(
-                "Không lấy được License:",
-                licenseError
-            );
-
-            return;
-        }
-
-        const license = licenses?.[0];
-
-        if (!license) {
-
-            console.log(
-                "Tài khoản chưa có License."
-            );
-
-            return;
-        }
-
-        console.log(
-            "License:",
-            license.license_key
-        );
-
-        // ================================================
-        // Tạo ID cho thiết bị
-        // ================================================
-
-        let deviceId =
-            localStorage.getItem(
-                "minhvuong_device_id"
-            );
-
-        if (!deviceId) {
-
-            deviceId =
-                crypto.randomUUID();
-
-            localStorage.setItem(
-                "minhvuong_device_id",
-                deviceId
-            );
-        }
-
-        // ================================================
-        // Tên thiết bị
-        // ================================================
-
-        const deviceName =
-            "Web - " +
-            navigator.platform;
-
-        console.log(
-            "Device ID:",
-            deviceId
-        );
-
-        // ================================================
-        // Kích hoạt Device
-        // ================================================
-
-        const {
-            data,
-            error
-        } = await supabaseClient.rpc(
-            "activate_device",
-            {
-                p_license_id: license.id,
-                p_device_id: deviceId,
-                p_device_name: deviceName
-            }
-        );
-
-        if (error) {
-
-            console.error(
-                "Kích hoạt thiết bị thất bại:",
-                error
-            );
-
-            alert(
-                "Không thể kích hoạt thiết bị:\n\n" +
-                error.message
-            );
-
-            return;
-        }
-
-        console.log(
-            "Thiết bị đã được kích hoạt:",
-            data
-        );
-
-        console.log(
-            "License:",
-            license.license_key
-        );
-
-        console.log(
-            "Thiết bị tối đa:",
-            license.max_devices
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Device activation error:",
-            error
-        );
-    }
-}  
-
             }
 
 
@@ -916,14 +792,23 @@ if (logoutButton) {
 
 function updateAuthUI(user) {
 
-    if (!guestAuth || !userMenu) {
-        return;
-    }
+    const guestOnlyNavLinks =
+        document.querySelectorAll(".nav-link-guest-only");
 
 
     if (user) {
 
         // Đã đăng nhập
+
+        // Chỉ giữ lại mục "Tài liệu", ẩn các mục còn lại
+        guestOnlyNavLinks.forEach((link) => {
+            link.style.display = "none";
+        });
+
+        if (!guestAuth || !userMenu) {
+            return;
+        }
+
         guestAuth.style.display = "none";
 
         userMenu.classList.add("show");
@@ -948,6 +833,16 @@ function updateAuthUI(user) {
     } else {
 
         // Chưa đăng nhập
+
+        // Hiện lại toàn bộ menu
+        guestOnlyNavLinks.forEach((link) => {
+            link.style.display = "";
+        });
+
+        if (!guestAuth || !userMenu) {
+            return;
+        }
+
         guestAuth.style.display = "flex";
 
         userMenu.classList.remove("show");
@@ -974,9 +869,17 @@ function updateAuthUI(user) {
     }
 
 }
+
+
+
 /* =====================================================
    LICENSE + DEVICE ACTIVATION
+   Tách khỏi LOGIN để không làm hỏng luồng đăng nhập.
+   Không đọc/hiển thị license_key ở frontend.
    ===================================================== */
+
+const SCENE_MANAGER_PRODUCT_ID =
+    "009addbb-3160-4d2a-8964-334eaa7a8049";
 
 async function activateCurrentDevice() {
 
@@ -984,70 +887,17 @@ async function activateCurrentDevice() {
 
     try {
 
-        // Kiểm tra user đang đăng nhập
         const {
             data: userData,
             error: userError
         } = await supabaseClient.auth.getUser();
 
         if (userError || !userData?.user) {
-
             console.log(
-                "Chưa đăng nhập, không kích hoạt device."
+                "Chưa đăng nhập, không kích hoạt thiết bị."
             );
-
             return;
         }
-
-        const user = userData.user;
-
-        console.log(
-            "User hiện tại:",
-            user.email
-        );
-
-
-        // ================================================
-        // Lấy License của user
-        // ================================================
-
-        const {
-            data: licenses,
-            error: licenseError
-        } = await supabaseClient.rpc(
-            "get_my_license"
-        );
-
-        if (licenseError) {
-
-            console.error(
-                "Không lấy được License:",
-                licenseError
-            );
-
-            return;
-        }
-
-        const license = licenses?.[0];
-
-        if (!license) {
-
-            console.log(
-                "Tài khoản chưa có License."
-            );
-
-            return;
-        }
-
-        console.log(
-            "License:",
-            license.license_key
-        );
-
-
-        // ================================================
-        // Tạo / lấy Device ID
-        // ================================================
 
         let deviceId =
             localStorage.getItem(
@@ -1056,8 +906,7 @@ async function activateCurrentDevice() {
 
         if (!deviceId) {
 
-            deviceId =
-                crypto.randomUUID();
+            deviceId = crypto.randomUUID();
 
             localStorage.setItem(
                 "minhvuong_device_id",
@@ -1065,24 +914,13 @@ async function activateCurrentDevice() {
             );
         }
 
-        console.log(
-            "Device ID:",
-            deviceId
-        );
-
-
-        // ================================================
-        // Tên thiết bị
-        // ================================================
-
         const deviceName =
             "Web - " +
-            navigator.platform;
-
-
-        // ================================================
-        // Kích hoạt Device
-        // ================================================
+            (
+                navigator.userAgentData?.platform ||
+                navigator.platform ||
+                "Unknown"
+            );
 
         const {
             data,
@@ -1090,9 +928,14 @@ async function activateCurrentDevice() {
         } = await supabaseClient.rpc(
             "activate_device",
             {
-                p_license_id: license.id,
-                p_device_id: deviceId,
-                p_device_name: deviceName
+                p_product_id:
+                    SCENE_MANAGER_PRODUCT_ID,
+
+                p_device_id:
+                    deviceId,
+
+                p_device_name:
+                    deviceName
             }
         );
 
@@ -1107,19 +950,46 @@ async function activateCurrentDevice() {
         }
 
         console.log(
-            "✅ Thiết bị đã được kích hoạt:",
+            "Kết quả kích hoạt thiết bị:",
             data
         );
 
-        console.log(
-            "License:",
-            license.license_key
-        );
+        if (!data?.success) {
 
-        console.log(
-            "Thiết bị tối đa:",
-            license.max_devices
-        );
+            if (data?.code === "NO_ACTIVE_LICENSE") {
+                console.log(
+                    "Tài khoản chưa có license active cho Scene Manager Pro."
+                );
+                return;
+            }
+
+            if (data?.code === "DEVICE_LIMIT_REACHED") {
+                console.warn(
+                    "Đã đạt giới hạn thiết bị:",
+                    data
+                );
+                return;
+            }
+
+            console.warn(
+                "Activation chưa thành công:",
+                data
+            );
+
+            return;
+        }
+
+        if (data.code === "ACTIVATED") {
+            console.log(
+                "✅ Thiết bị đã được kích hoạt."
+            );
+        }
+
+        if (data.code === "ALREADY_ACTIVATED") {
+            console.log(
+                "✅ Thiết bị này đã được kích hoạt trước đó."
+            );
+        }
 
     } catch (error) {
 
@@ -1133,33 +1003,7 @@ async function activateCurrentDevice() {
 /* =====================================================
    SUPABASE AUTH STATE
    ===================================================== */
-function updateNavigationForAuth(session) {
 
-    supabaseClient.auth.onAuthStateChange(
-    (event, session) => {
-
-        console.log(
-            "Supabase Auth:",
-            event
-        );
-
-        updateAuthUI(
-            session?.user || null
-        );
-
-        // Ẩn/hiện menu theo trạng thái đăng nhập
-        updateNavigationForAuth(session);
-
-        if (session?.user) {
-
-            setTimeout(() => {
-                activateCurrentDevice();
-            }, 0);
-
-        }
-
-    }
-);
 supabaseClient.auth.onAuthStateChange(
     (event, session) => {
 
@@ -1172,14 +1016,8 @@ supabaseClient.auth.onAuthStateChange(
             session?.user || null
         );
 
-        if (session?.user) {
-
-            setTimeout(() => {
-                activateCurrentDevice();
-            }, 0);
-
-        }
-
+        // Không tự động activate ở đây.
+        // Login và activation được tách riêng để tránh lỗi đăng nhập.
     }
 );
 
@@ -1212,9 +1050,10 @@ async function loadCurrentUser() {
         }
 
 
-        updateAuthUI(
-            data?.session?.user || null
-        );
+        const currentUser =
+            data?.session?.user || null;
+
+        updateAuthUI(currentUser);
 
 
     } catch (error) {

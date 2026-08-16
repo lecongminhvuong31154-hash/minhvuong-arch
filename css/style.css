@@ -2121,69 +2121,7 @@ footer p {
     transition: none !important;
   }
 
-}/* ================================
-   HERO TITLE - GIÃN DÒNG
-================================ */
-
-.hero-content h1 {
-  line-height: 1.25 !important;
-  letter-spacing: -0.02em;
-  text-align: center;
-/* ==========================================
-   ẢNH TRANG CHI TIẾT CÔNG TRÌNH
-========================================== */
-
-.detail-gallery {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
 }
-
-.detail-gallery .image {
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    background: #f5f3ef;
-}
-
-.detail-gallery .image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: center;
-}
-
-
-/* Ảnh cuối chiếm toàn bộ chiều rộng */
-
-.detail-gallery .image:last-child {
-    grid-column: 1 / -1;
-}
-
-
-/* ĐIỆN THOẠI */
-
-@media (max-width: 768px) {
-
-    .detail-gallery {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .detail-gallery .image {
-        height: auto;
-    }
-
-    .detail-gallery .image img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-    }
-
-    .detail-gallery .image:last-child {
-        grid-column: auto;
-    }
 
 ```css
 /* =====================================================
@@ -2308,7 +2246,6 @@ footer p {
 
 .social-contact .social-icons .social-icon:nth-child(3) {
     color: #E4405F !important;
-}color: #E4405F !important;
 }
 
 
@@ -2351,6 +2288,8 @@ footer p {
         max-width: 28px !important;
         max-height: 28px !important;
     }
+}
+
 /* =========================================================
    RESOURCE LIBRARY
    ========================================================= */
@@ -2588,6 +2527,8 @@ footer p {
     opacity: 1 !important;
 
     transform: translateY(0) !important;
+}
+
 /* =====================================================
    STATEMENT - CĂN GIỮA TUYỆT ĐỐI
    ===================================================== */
@@ -2640,4 +2581,1334 @@ footer p {
 
 .statement p em {
     font-style: italic !important;
+}
+/* =========================================================
+   FIX + PLUGIN STORE
+   ========================================================= */
+
+
+/* =========================================================
+   HERO TITLE
+   ========================================================= */
+
+.hero-content h1 {
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em;
+    text-align: center;
+}
+
+
+/* =========================================================
+   DETAIL GALLERY
+   ========================================================= */
+
+.detail-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.detail-gallery .image {
+    width: 100%;
+    height: 500px;
+    min-height: 0;
+    overflow: hidden;
+    background: #f5f3ef;
+}
+
+.detail-gallery .image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+.detail-gallery .image:last-child {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   SOCIAL CONTACT
+   ========================================================= */
+
+.contact-info + .social-contact {
+    display: block !important;
+    width: 100% !important;
+    margin-top: 35px !important;
+}
+
+.contact-info + .social-contact .social-title {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 0 16px 0 !important;
+    padding: 0 !important;
+
+    font-family: "DM Sans", sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+
+    letter-spacing: 0.18em !important;
+    color: #99948c !important;
+}
+
+.contact-info + .social-contact .social-icons {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    gap: 16px !important;
+
+    width: auto !important;
+    height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.contact-info + .social-contact .social-icon {
+    display: flex !important;
+
+    flex: 0 0 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    max-width: 32px !important;
+    max-height: 32px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: none !important;
+    overflow: hidden !important;
+
+    text-decoration: none !important;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.contact-info + .social-contact .social-icon svg {
+    display: block !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    max-width: 32px !important;
+    max-height: 32px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    fill: currentColor !important;
+}
+
+.social-contact .social-icons .social-icon:nth-child(1) {
+    color: #1877F2 !important;
+}
+
+.social-contact .social-icons .social-icon:nth-child(2) {
+    color: #000000 !important;
+}
+
+.social-contact .social-icons .social-icon:nth-child(3) {
+    color: #E4405F !important;
+}
+
+.contact-info + .social-contact .social-icon:hover {
+    transform: translateY(-3px) !important;
+    opacity: 0.7 !important;
+}
+
+
+/* =========================================================
+   RESOURCE LIBRARY
+   ========================================================= */
+
+.resource-section {
+    padding-top: 20px !important;
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.resource-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 180px;
+    padding: 28px;
+
+    background: #ebe7df;
+    border: 1px solid #d8d2c8;
+    border-radius: 12px;
+
+    text-decoration: none;
+    color: #292724;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.resource-card span {
+    display: block;
+
+    margin-bottom: 30px;
+
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+
+    letter-spacing: 0.15em;
+    color: #99948c;
+}
+
+.resource-card h3 {
+    margin: 0;
+
+    font-family: "DM Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+
+    letter-spacing: 0.03em;
+    color: #292724;
+}
+
+.resource-card p {
+    margin: 10px 0 0;
+
+    font-family: "DM Sans", sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+
+    color: #77736d;
+}
+
+.resource-card:hover {
+    transform: translateY(-4px);
+
+    background: #e3ded5;
+    border-color: #bcb5aa;
+}
+
+
+/* =========================================================
+   PLUGIN STORE
+   GIỐNG KIỂU BẢNG THƯ VIỆN FREE
+   ========================================================= */
+
+.pluginstore {
+    width: 100%;
+}
+
+.pluginstore-grid,
+.plugin-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+/* CARD PLUGIN */
+
+.pluginstore-card,
+.plugin-card {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    min-height: 180px;
+
+    padding: 28px;
+
+    background: #ebe7df;
+
+    border: 1px solid #d8d2c8;
+
+    border-radius: 12px;
+
+    box-sizing: border-box;
+
+    color: #292724;
+
+    text-decoration: none;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* SỐ / LABEL */
+
+.pluginstore-card span,
+.plugin-card span {
+    display: block;
+
+    margin-bottom: 25px;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+
+    color: #99948c;
+}
+
+
+/* TÊN PLUGIN */
+
+.pluginstore-card h3,
+.plugin-card h3 {
+    margin: 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    letter-spacing: 0.02em;
+
+    color: #292724;
+}
+
+
+/* MÔ TẢ */
+
+.pluginstore-card p,
+.plugin-card p {
+    margin: 10px 0 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    color: #77736d;
+}
+
+
+/* NÚT / LINK TRONG PLUGIN */
+
+.pluginstore-card a,
+.plugin-card a {
+    display: inline-flex;
+
+    width: max-content;
+
+    margin-top: 25px;
+
+    padding-bottom: 4px;
+
+    border-bottom: 1px solid #292724;
+
+    font-size: 10px;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+    color: #292724;
+}
+
+.pluginstore-card a:hover,
+.plugin-card a:hover {
+    color: #b86f52;
+
+    border-color: #b86f52;
+}
+
+
+/* HOVER */
+
+.pluginstore-card:hover,
+.plugin-card:hover {
+    transform: translateY(-4px);
+
+    background: #e3ded5;
+
+    border-color: #bcb5aa;
+
+    box-shadow: 0 8px 25px rgba(41, 39, 36, 0.06);
+}
+
+
+/* =========================================================
+   NẾU PLUGIN STORE ĐANG DÙNG .DOC-GRID / .DOC-CARD
+   ========================================================= */
+
+.pluginstore .doc-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+.pluginstore .doc-card {
+    min-height: 180px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 28px;
+
+    text-align: left !important;
+
+    background: #ebe7df;
+
+    border: 1px solid #d8d2c8;
+
+    border-radius: 12px;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.pluginstore .doc-card > span,
+.pluginstore .doc-card h3,
+.pluginstore .doc-card p,
+.pluginstore .doc-card a {
+    text-align: left !important;
+}
+
+.pluginstore .doc-card h3 {
+    margin: 10px 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+.pluginstore .doc-card p {
+    margin: 0;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    color: #77736d;
+}
+
+.pluginstore .doc-card:hover {
+    transform: translateY(-4px);
+
+    background: #e3ded5;
+
+    border-color: #bcb5aa;
+}
+
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+.scroll-reveal {
+    opacity: 0;
+
+    transform: translateY(50px);
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+.scroll-reveal.show {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+.scroll-image {
+    opacity: 0 !important;
+
+    transform: translateY(45px) !important;
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease !important;
+}
+
+.scroll-image.is-visible {
+    opacity: 1 !important;
+
+    transform: translateY(0) !important;
+}
+
+
+/* =========================================================
+   STATEMENT
+   ========================================================= */
+
+.statement {
+    width: 100% !important;
+
+    min-height: 300px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    text-align: center !important;
+
+    padding: 80px 30px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+.statement p {
+    width: 100% !important;
+
+    max-width: 1000px !important;
+
+    margin: 0 auto !important;
+
+    padding: 0 !important;
+
+    text-align: center !important;
+
+    font-family: "Playfair Display", serif !important;
+
+    font-size: clamp(26px, 3vw, 38px) !important;
+
+    font-weight: 400 !important;
+
+    line-height: 1.4 !important;
+
+    color: #222 !important;
+}
+
+.statement p em {
+    font-style: italic !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .resource-grid,
+    .pluginstore-grid,
+    .plugin-grid,
+    .pluginstore .doc-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+    .detail-gallery {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .detail-gallery .image,
+    .detail-gallery .image:first-child,
+    .detail-gallery .image:last-child {
+        grid-column: auto;
+
+        width: 100%;
+        height: auto;
+        min-height: 0;
+    }
+
+    .detail-gallery .image img {
+        width: 100%;
+        height: auto;
+
+        object-fit: contain;
+    }
+
+
+    .resource-grid,
+    .pluginstore-grid,
+    .plugin-grid,
+    .pluginstore .doc-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+
+    .resource-card,
+    .pluginstore-card,
+    .plugin-card,
+    .pluginstore .doc-card {
+        min-height: 150px;
+
+        padding: 22px;
+
+        border-radius: 10px;
+    }
+
+
+    .resource-card h3,
+    .pluginstore-card h3,
+    .plugin-card h3,
+    .pluginstore .doc-card h3 {
+        font-size: 17px;
+    }
+
+
+    .contact-info + .social-contact .social-icons {
+        gap: 12px !important;
+    }
+
+    .contact-info + .social-contact .social-icon {
+        width: 28px !important;
+        height: 28px !important;
+
+        min-width: 28px !important;
+        min-height: 28px !important;
+
+        max-width: 28px !important;
+        max-height: 28px !important;
+
+        flex-basis: 28px !important;
+    }
+
+    .contact-info + .social-contact .social-icon svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+
+    .statement {
+        min-height: 250px !important;
+
+        padding: 65px 20px !important;
+    }
+
+    .statement p {
+        font-size: clamp(24px, 7vw, 32px) !important;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .pluginstore-card,
+    .plugin-card,
+    .pluginstore .doc-card {
+        padding: 20px;
+    }
+
+}/* =========================================================
+   PLUGIN STORE
+   ========================================================= */
+
+.plugin-section {
+    width: 100%;
+    padding-top: 20px;
+}
+
+
+/* GRID */
+
+.plugin-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   PLUGIN CARD
+   ========================================================= */
+
+.plugin-card {
+    width: 100%;
+    min-height: 250px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 28px;
+
+    background: #ebe7df;
+
+    border: 1px solid #d8d2c8;
+    border-radius: 12px;
+
+    color: #292724;
+    text-decoration: none;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* =========================================================
+   PLUGIN NUMBER
+   ========================================================= */
+
+.plugin-card .plugin-number,
+.plugin-card > span:first-child {
+    display: block;
+
+    margin-bottom: 25px;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 11px;
+    line-height: 1.2;
+
+    letter-spacing: 0.15em;
+
+    color: #99948c;
+}
+
+
+/* =========================================================
+   PLUGIN TITLE
+   ========================================================= */
+
+.plugin-card h3 {
+    margin: 0 0 10px 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 20px;
+    line-height: 1.35;
+
+    font-weight: 500;
+
+    letter-spacing: 0.02em;
+
+    color: #292724;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.plugin-card p {
+    margin: 0;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+    line-height: 1.65;
+
+    color: #77736d;
+}
+
+
+/* =========================================================
+   VERSION
+   ========================================================= */
+
+.plugin-card .version,
+.plugin-card small {
+    display: block;
+
+    margin-top: 18px;
+
+    font-size: 11px;
+
+    letter-spacing: 0.08em;
+
+    color: #99948c;
+}
+
+
+/* =========================================================
+   BOTTOM AREA
+   ========================================================= */
+
+.plugin-card .plugin-bottom {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+
+/* =========================================================
+   PRICE
+   ========================================================= */
+
+.plugin-card .price {
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #292724;
+}
+
+
+/* =========================================================
+   BUY BUTTON
+   ========================================================= */
+
+.plugin-card .buy-button,
+.plugin-card .plugin-buy,
+.plugin-card a {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 38px;
+
+    padding: 9px 14px;
+
+    border: 1px solid #292724;
+
+    background: #292724;
+
+    color: #ffffff;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
+/* =========================================================
+   FIX CUỐI - KÍCH THƯỚC ẢNH PLUGIN
+   ========================================================= */
+
+.plugin-card .plugin-image {
+    display: block !important;
+
+    width: calc(100% + 56px) !important;
+    height: 30px !important;
+
+    margin: -28px -28px 20px -28px !important;
+
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+
+    background: #d8d2c8 !important;
+}
+
+.plugin-card .plugin-image img {
+    display: block !important;
+
+    width: 100% !important;
+    height: 80px !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+}/* =========================================================
+   PLUGIN CARD - GIỮ KÍCH THƯỚC GỌN NHƯ BAN ĐẦU
+   ========================================================= */
+
+.plugin-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 20px !important;
+
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+.plugin-card {
+    width: 100% !important;
+
+    /* KHÔNG cho card phình quá lớn */
+    min-height: 250px !important;
+    height: 300px !important;
+
+    padding: 28px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   ẢNH - CHỈ CHIẾM MỘT PHẦN NHỎ CỦA CARD
+   ========================================================= */
+
+.plugin-card .plugin-image {
+    flex: 0 0 65px !important;
+
+    width: calc(100% + 56px) !important;
+    height: 65px !important;
+
+    margin: -28px -28px 15px -28px !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+}
+
+.plugin-card .plugin-image img {
+    display: block !important;
+
+    width: 100% !important;
+    height: 65px !important;
+
+    max-width: none !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+
+/* =========================================================
+   NỘI DUNG
+   ========================================================= */
+
+.plugin-card .plugin-number {
+    margin-bottom: 8px !important;
+}
+
+.plugin-card h3 {
+    margin: 0 0 6px 0 !important;
+
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+}
+
+.plugin-card p {
+    margin: 0 !important;
+
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+}
+
+
+/* =========================================================
+   GIÁ + NÚT
+   ========================================================= */
+
+.plugin-card .plugin-bottom {
+    margin-top: auto !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .plugin-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .plugin-card {
+        height: 300px !important;
+        padding: 24px !important;
+    }
+
+    .plugin-card .plugin-image {
+        flex-basis: 60px !important;
+
+        width: calc(100% + 48px) !important;
+        height: 60px !important;
+
+        margin: -24px -24px 15px -24px !important;
+    }
+
+    .plugin-card .plugin-image img {
+        height: 60px !important;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .plugin-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .plugin-card {
+        height: 300px !important;
+        padding: 22px !important;
+    }
+
+    .plugin-card .plugin-image {
+        flex-basis: 65px !important;
+
+        width: calc(100% + 44px) !important;
+        height: 65px !important;
+
+        margin: -22px -22px 15px -22px !important;
+    }
+
+    .plugin-card .plugin-image img {
+        height: 65px !important;
+    }
+}
+
+
+    /* =====================================================
+       PLUGIN CARDS — COMPACT / VỪA MẮT
+    ===================================================== */
+
+    .plugin-grid {
+        max-width: 1050px;
+        margin: 0 auto;
+        gap: 18px;
+    }
+
+    .plugin-card {
+        border-radius: 12px;
+    }
+
+    .plugin-card-image {
+        width: 100%;
+        height: 150px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #c9c5be;
+    }
+
+    .plugin-card-image img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    .plugin-card-content {
+        min-height: 220px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .plugin-card-content .plugin-number {
+        margin-bottom: 12px;
+        font-size: 10px;
+    }
+
+    .plugin-card-content h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        line-height: 1.25;
+    }
+
+    .plugin-card-content > p {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .plugin-card-content .plugin-meta {
+        margin-top: 14px;
+        padding-top: 12px;
+        font-size: 10px;
+    }
+
+    .plugin-card-content .plugin-bottom {
+        margin-top: auto;
+        padding-top: 16px;
+        gap: 10px;
+    }
+
+    .plugin-card-content .plugin-price {
+        font-size: 15px;
+    }
+
+    .plugin-card-content .plugin-buy-btn {
+        padding: 9px 12px;
+        font-size: 9px;
+    }
+
+    @media (max-width: 1000px) {
+        .plugin-grid {
+        max-width: 760px;
+        }
+    }
+
+    @media (max-width: 650px) {
+        .plugin-grid {
+        max-width: none;
+        }
+
+        .plugin-card-image {
+        height: 170px;
+        }
+
+        .plugin-card-content {
+        min-height: 210px;
+        padding: 20px;
+        }
+    }
+
+
+/* =========================================================
+   FINAL FIX — 3 PLUGIN CARDS CÙNG KÍCH THƯỚC
+   Card 01 / 02 / 03 luôn chia đều 3 cột và cao bằng nhau.
+   ========================================================= */
+
+.plugin-store .plugin-grid,
+#plugin-grid.plugin-grid {
+    width: 100% !important;
+    max-width: 1050px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-auto-rows: 1fr !important;
+
+    align-items: stretch !important;
+    gap: 18px !important;
+}
+
+.plugin-store .plugin-grid > .plugin-card,
+#plugin-grid.plugin-grid > .plugin-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 100% !important;
+    min-height: 520px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-self: stretch !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+
+    border: 1px solid #d0cbc2 !important;
+    border-radius: 12px !important;
+    background: #f4f0e8 !important;
+}
+
+/*
+   Chuẩn hóa phần ảnh đầu tiên của cả 3 thẻ.
+   Quy tắc này cũng sửa thẻ 02 đang dùng class ảnh không đồng nhất.
+*/
+.plugin-store .plugin-grid > .plugin-card > div:first-child:not(.plugin-card-content),
+#plugin-grid.plugin-grid > .plugin-card > div:first-child:not(.plugin-card-content) {
+    width: 100% !important;
+    height: 150px !important;
+    min-height: 150px !important;
+    flex: 0 0 150px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    background: #c9c5be !important;
+}
+
+.plugin-store .plugin-grid > .plugin-card > div:first-child:not(.plugin-card-content) img,
+#plugin-grid.plugin-grid > .plugin-card > div:first-child:not(.plugin-card-content) img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.plugin-store .plugin-grid .plugin-placeholder,
+#plugin-grid.plugin-grid .plugin-placeholder {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 150px !important;
+}
+
+.plugin-store .plugin-grid .plugin-card-content,
+#plugin-grid.plugin-grid .plugin-card-content {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    flex: 1 1 auto !important;
+
+    padding: 20px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Card 01 đặt bottom ngoài content */
+.plugin-store .plugin-grid > .plugin-card > .plugin-bottom,
+#plugin-grid.plugin-grid > .plugin-card > .plugin-bottom {
+    width: 100% !important;
+
+    margin-top: auto !important;
+    padding: 16px 20px 20px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Card 02 / 03 đặt bottom bên trong content */
+.plugin-store .plugin-grid .plugin-card-content > .plugin-bottom,
+#plugin-grid.plugin-grid .plugin-card-content > .plugin-bottom {
+    margin-top: auto !important;
+    padding-top: 16px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+}
+
+.plugin-store .plugin-grid .plugin-card h3,
+#plugin-grid.plugin-grid .plugin-card h3 {
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+}
+
+@media (max-width: 900px) {
+    .plugin-store .plugin-grid,
+    #plugin-grid.plugin-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 650px) {
+    .plugin-store .plugin-grid,
+    #plugin-grid.plugin-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .plugin-store .plugin-grid > .plugin-card,
+    #plugin-grid.plugin-grid > .plugin-card {
+        min-height: 500px !important;
+    }
 }
