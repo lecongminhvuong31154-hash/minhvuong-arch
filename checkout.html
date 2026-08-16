@@ -1571,25 +1571,28 @@
     }
 
     async function hasActiveLicense(productId) {
+        /*
+         * Kiểm tra license bằng RPC server-side.
+         * Không phụ thuộc RLS SELECT trực tiếp trên licenses.
+         * RPC phải kiểm tra auth.uid() + product_id + status=active.
+         */
         const { data, error } =
-            await supabaseClient
-                .from("licenses")
-                .select("id, status, product_id, user_id")
-                .eq("user_id", currentUser.id)
-                .eq("product_id", productId)
-                .eq("status", "active")
-                .limit(1)
-                .maybeSingle();
+            await supabaseClient.rpc(
+                "has_active_license",
+                {
+                    p_product_id: productId
+                }
+            );
 
         if (error) {
             console.error(
-                "License lookup error:",
+                "has_active_license RPC error:",
                 error
             );
             return false;
         }
 
-        return !!data;
+        return data === true;
     }
 
     async function findExistingPendingOrder(productId) {
