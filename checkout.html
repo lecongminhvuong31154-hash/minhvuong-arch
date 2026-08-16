@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Thanh toán — ARCHI Material Board</title>
+    <title>Thanh toán — ARCHI Plugin Store</title>
 
     <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1481,230 +1481,740 @@
 <script src="js/script.js"></script>
 <script>
 /* ============================================================
-   ARCHI CHECKOUT - PRODUCT DATA FROM SUPABASE
-
-   SECURITY RULE:
-   localStorage chỉ chứa selectedProductSlug.
-   KHÔNG tin name/price/amount từ localStorage.
-   Giá chính thức luôn lấy từ products.price.
-
-   SUPABASE CONFIG:
-   - Nếu js/script.js của bạn đã tạo window.supabaseClient, code
-     sẽ dùng lại client đó.
-   - Nếu chưa, đặt SUPABASE_URL và SUPABASE_ANON_KEY bên dưới
-     bằng URL + anon/public key của project Supabase.
-   - KHÔNG đặt service_role key trong frontend.
+   ARCHI CHECKOUT
+   - Giá CHỈ lấy từ Supabase products.price
+   - Order CHỈ tạo qua RPC public.create_order(product_id)
+   - QR dùng amount + payment_reference THẬT từ order
+   - Không hard-code giá trong frontend
+   - Frontend KHÔNG tự đánh dấu paid
    ============================================================ */
 (function () {
-    'use strict';
+    "use strict";
 
-    const SUPABASE_URL = window.SUPABASE_URL || '';
-    const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || '';
+    const supabaseClient =
+        window.supabaseClient || null;
 
-    let supabaseClient = window.supabaseClient || null;
+    const POLL_INTERVAL_MS = 3000;
 
-    if (!supabaseClient && SUPABASE_URL && SUPABASE_ANON_KEY) {
-        if (window.supabase && typeof window.supabase.createClient === 'function') {
-            supabaseClient = window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
+    let currentProduct = null;
+    let currentOrder = null;
+    let statusTimer = null;
+
+    function formatPrice(value) {
+        const amount = Number(value);
+
+        if (!Number.isFinite(amount) || amount < 0) {
+            return "0 ₫";
+        }
+
+        return new Intl.NumberFormat(
+            "vi-VN"
+        ).format(amount) + " ₫";
+    }
+
+    function setText(id, value) {
+        const node =
+            document.getElementById(id);
+
+        if (node) {
+            node.textContent = value;
+        }
+    }
+
+    function showFatal(message) {
+        console.error(message);
+        alert(message);
+    }
+
+    function getOrderRow(data) {
+        if (Array.isArray(data)) {
+            return data[0] || null;
+        }
+
+        return data || null;
+    }
+
+    function getCachedOrderKey(productId) {
+        return (
+            "archi_checkout_order_" +
+            String(productId)
+        );
+    }
+
+    async function requireSession() {
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .getSession();
+
+        if (
+            error ||
+            !data?.session?.user
+        ) {
+            throw new Error(
+                "Bạn cần đăng nhập trước khi thanh toán."
+            );
+        }
+
+        return data.session;
+    }
+
+    async function loadProduct(slug) {
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("products")
+                .select(
+                    "id, name, slug, description, price, version, download_url"
+                )
+                .eq("slug", slug)
+                .single();
+
+        if (error || !data) {
+            console.error(
+                "Product lookup error:",
+                error
+            );
+
+            throw new Error(
+                "Không tìm thấy sản phẩm trong Supabase."
+            );
+        }
+
+        const price =
+            Number(data.price);
+
+        if (
+            !Number.isFinite(price) ||
+            price <= 0
+        ) {
+            throw new Error(
+                "Giá sản phẩm không hợp lệ cho checkout trả phí."
+            );
+        }
+
+        return data;
+    }
+
+    async function tryReusePendingOrder(
+        product
+    ) {
+        const key =
+            getCachedOrderKey(product.id);
+
+        const cachedId =
+            sessionStorage.getItem(key);
+
+        if (!cachedId) {
+            return null;
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("orders")
+                .select(
+                    "id, product_id, amount, status, payment_reference"
+                )
+                .eq("id", cachedId)
+                .eq(
+                    "product_id",
+                    product.id
+                )
+                .maybeSingle();
+
+        if (
+            error ||
+            !data ||
+            data.status !== "pending" ||
+            Number(data.amount) !==
+                Number(product.price)
+        ) {
+            sessionStorage.removeItem(
+                key
+            );
+
+            return null;
+        }
+
+        return {
+            order_id: data.id,
+            product_id:
+                data.product_id,
+            amount:
+                Number(data.amount),
+            status:
+                data.status,
+            payment_reference:
+                data.payment_reference
+        };
+    }
+
+    async function createOrder(product) {
+        /*
+         * RPC public.create_order tự đọc products.price
+         * theo product_id.
+         * Frontend KHÔNG gửi amount.
+         */
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "create_order",
+                {
+                    p_product_id:
+                        product.id
+                }
+            );
+
+        if (error) {
+            console.error(
+                "create_order RPC error:",
+                error
+            );
+
+            throw new Error(
+                "Không tạo được đơn hàng."
+            );
+        }
+
+        const row =
+            getOrderRow(data);
+
+        if (
+            !row?.order_id ||
+            !row?.payment_reference
+        ) {
+            console.error(
+                "create_order invalid response:",
+                data
+            );
+
+            throw new Error(
+                "Dữ liệu đơn hàng trả về không hợp lệ."
+            );
+        }
+
+        const order = {
+            order_id:
+                row.order_id,
+            product_id:
+                row.product_id,
+            amount:
+                Number(row.amount),
+            status:
+                row.status,
+            payment_reference:
+                row.payment_reference
+        };
+
+        sessionStorage.setItem(
+            getCachedOrderKey(
+                product.id
+            ),
+            order.order_id
+        );
+
+        return order;
+    }
+
+    async function getOrCreateOrder(
+        product
+    ) {
+        const reusable =
+            await tryReusePendingOrder(
+                product
+            );
+
+        if (reusable) {
+            return reusable;
+        }
+
+        return await createOrder(
+            product
+        );
+    }
+
+    function renderProduct(product) {
+        const amount =
+            Number(product.price);
+
+        setText(
+            "checkoutProductName",
+            product.name
+        );
+
+        setText(
+            "checkoutOrderProductName",
+            product.name
+        );
+
+        setText(
+            "checkoutProductPrice",
+            formatPrice(amount)
+        );
+
+        const description =
+            product.description ||
+            "Plugin dành cho quy trình thiết kế.";
+
+        setText(
+            "checkoutProductDescription",
+            description
+        );
+
+        setText(
+            "checkoutHeaderText",
+            "Hoàn tất chuyển khoản để nhận " +
+                product.name +
+                "."
+        );
+
+        const image =
+            document.getElementById(
+                "checkoutProductImage"
+            );
+
+        const productImages = {
+            "scene-manager-pro":
+                "ANH-PLUGIN/PLUGIN-1.jpg",
+            "material-map-exporter-pro":
+                "ANH-PLUGIN/PLUGIN-1.jpg"
+        };
+
+        if (image) {
+            image.src =
+                productImages[
+                    product.slug
+                ] ||
+                "ANH-PLUGIN/PLUGIN-1.jpg";
+
+            image.alt =
+                product.name ||
+                "Plugin";
+        }
+
+        const successText =
+            document.getElementById(
+                "checkoutSuccessText"
+            );
+
+        if (successText) {
+            successText.textContent =
+                "Thanh toán đã được xác nhận. Bạn có thể tải " +
+                product.name +
+                ".";
+        }
+    }
+
+    function renderOrder(order) {
+        const amount =
+            Number(order.amount);
+
+        /*
+         * Từ thời điểm order được tạo,
+         * mọi hiển thị thanh toán dùng orders.amount.
+         */
+        setText(
+            "checkoutProductPrice",
+            formatPrice(amount)
+        );
+
+        setText(
+            "checkoutTransferAmount",
+            formatPrice(amount)
+        );
+
+        setText(
+            "bankAmount",
+            formatPrice(amount)
+        );
+
+        setText(
+            "orderId",
+            order.payment_reference
+        );
+
+        setText(
+            "transferContent",
+            order.payment_reference
+        );
+
+        const bankBin =
+            "970422";
+
+        const accountNumber =
+            "0796594720";
+
+        const accountName =
+            "LE CONG MINH VUONG";
+
+        const qrUrl =
+            "https://img.vietqr.io/image/" +
+            bankBin +
+            "-" +
+            accountNumber +
+            "-compact2.png" +
+            "?amount=" +
+            encodeURIComponent(amount) +
+            "&addInfo=" +
+            encodeURIComponent(
+                order.payment_reference
+            ) +
+            "&accountName=" +
+            encodeURIComponent(
+                accountName
+            );
+
+        const qr =
+            document.getElementById(
+                "vietQr"
+            );
+
+        if (qr) {
+            qr.src = qrUrl;
+            qr.alt =
+                "QR thanh toán " +
+                (
+                    currentProduct?.name ||
+                    "plugin"
+                );
+        }
+    }
+
+    async function checkOrderStatus() {
+        if (!currentOrder?.order_id) {
+            return;
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("orders")
+                .select(
+                    "id, status, amount, payment_reference"
+                )
+                .eq(
+                    "id",
+                    currentOrder.order_id
+                )
+                .maybeSingle();
+
+        if (error) {
+            console.error(
+                "Order status error:",
+                error
+            );
+
+            return;
+        }
+
+        if (!data) {
+            return;
+        }
+
+        currentOrder.status =
+            data.status;
+
+        if (
+            data.status === "paid"
+        ) {
+            stopPolling();
+            showPaidState();
+        }
+    }
+
+    function startPolling() {
+        stopPolling();
+
+        statusTimer =
+            window.setInterval(
+                checkOrderStatus,
+                POLL_INTERVAL_MS
+            );
+
+        checkOrderStatus();
+    }
+
+    function stopPolling() {
+        if (statusTimer) {
+            clearInterval(
+                statusTimer
+            );
+
+            statusTimer = null;
+        }
+    }
+
+    function showWaitingState() {
+        const paymentStatus =
+            document.getElementById(
+                "paymentStatus"
+            );
+
+        const confirmButton =
+            document.getElementById(
+                "confirmButton"
+            );
+
+        if (paymentStatus) {
+            paymentStatus.classList.add(
+                "show"
+            );
+        }
+
+        if (confirmButton) {
+            confirmButton.disabled =
+                true;
+
+            confirmButton.textContent =
+                "ĐANG CHỜ XÁC NHẬN...";
+        }
+    }
+
+    function showPaidState() {
+        const paymentStatus =
+            document.getElementById(
+                "paymentStatus"
+            );
+
+        const confirmButton =
+            document.getElementById(
+                "confirmButton"
+            );
+
+        const successBox =
+            document.getElementById(
+                "successBox"
+            );
+
+        if (paymentStatus) {
+            paymentStatus.classList.remove(
+                "show"
+            );
+        }
+
+        if (confirmButton) {
+            confirmButton.disabled =
+                true;
+
+            confirmButton.textContent =
+                "ĐÃ XÁC NHẬN THANH TOÁN";
+        }
+
+        if (successBox) {
+            successBox.classList.add(
+                "show"
             );
         }
     }
 
-    function formatPrice(value) {
-        const amount = Number(value);
-        if (!Number.isFinite(amount) || amount < 0) return '0 ₫';
-        return new Intl.NumberFormat('vi-VN').format(amount) + ' ₫';
+    async function requestDownload() {
+        if (!currentProduct) {
+            return;
+        }
+
+        const session =
+            await requireSession();
+
+        const functionUrl =
+            "https://zmgsforefkyxmftuczpz.supabase.co/functions/v1/get-plugin-download-url";
+
+        const response =
+            await fetch(
+                functionUrl,
+                {
+                    method:
+                        "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            "Bearer " +
+                            session.access_token
+                    },
+                    body:
+                        JSON.stringify({
+                            product_slug:
+                                currentProduct.slug
+                        })
+                }
+            );
+
+        const payload =
+            await response
+                .json()
+                .catch(
+                    () => ({})
+                );
+
+        if (
+            !response.ok ||
+            !payload?.signed_url
+        ) {
+            console.error(
+                "Download function error:",
+                payload
+            );
+
+            throw new Error(
+                payload?.message ||
+                "Không tạo được link tải plugin."
+            );
+        }
+
+        window.location.href =
+            payload.signed_url;
     }
 
-    function createOrderCode() {
-        const random = Math.random()
-            .toString(36)
-            .substring(2, 8)
-            .toUpperCase();
-        return 'ARCHI-' + random;
+    function bindActions() {
+        const confirmButton =
+            document.getElementById(
+                "confirmButton"
+            );
+
+        if (confirmButton) {
+            confirmButton.addEventListener(
+                "click",
+                async function () {
+                    const emailInput =
+                        document.getElementById(
+                            "customerEmail"
+                        );
+
+                    const email =
+                        emailInput
+                            ?.value
+                            ?.trim() ||
+                        "";
+
+                    if (!email) {
+                        alert(
+                            "Vui lòng nhập email để nhận thông tin đơn hàng."
+                        );
+
+                        emailInput?.focus();
+
+                        return;
+                    }
+
+                    /*
+                     * Không tự set paid.
+                     * Webhook SePay mới được quyền xác nhận.
+                     */
+                    showWaitingState();
+                    startPolling();
+                }
+            );
+        }
+
+        const downloadButton =
+            document.getElementById(
+                "downloadButton"
+            );
+
+        if (downloadButton) {
+            downloadButton.addEventListener(
+                "click",
+                async function (event) {
+                    event.preventDefault();
+
+                    try {
+                        await requestDownload();
+                    } catch (error) {
+                        console.error(error);
+
+                        alert(
+                            error?.message ||
+                            "Không tải được plugin."
+                        );
+                    }
+                }
+            );
+        }
+
+        window.addEventListener(
+            "beforeunload",
+            stopPolling
+        );
     }
 
     async function initCheckout() {
-        const slug = localStorage.getItem('selectedProductSlug');
+        try {
+            if (!supabaseClient) {
+                throw new Error(
+                    "Chưa kết nối được Supabase. Hãy kiểm tra js/script.js."
+                );
+            }
 
-        if (!slug) {
-            alert('Không tìm thấy sản phẩm. Vui lòng chọn plugin lại.');
-            window.location.href = 'documents.html';
-            return;
-        }
+            const slug =
+                localStorage.getItem(
+                    "selectedProductSlug"
+                );
 
-        if (!supabaseClient) {
-            console.error('Supabase client chưa được cấu hình.');
-            alert('Chưa kết nối được Supabase. Hãy kiểm tra SUPABASE_URL / SUPABASE_ANON_KEY hoặc window.supabaseClient.');
-            return;
-        }
+            if (!slug) {
+                throw new Error(
+                    "Không tìm thấy sản phẩm. Vui lòng chọn plugin lại."
+                );
+            }
 
-        // Lấy sản phẩm bằng SLUG; không lấy giá từ localStorage.
-        const { data: product, error: productError } = await supabaseClient
-            .from('products')
-            .select('id, name, slug, price, version, download_url')
-            .eq('slug', slug)
-            .single();
+            await requireSession();
 
-        if (productError || !product) {
-            console.error('Không tìm thấy product:', productError);
-            alert('Sản phẩm không tồn tại hoặc đã ngừng bán.');
-            window.location.href = 'documents.html';
-            return;
-        }
+            currentProduct =
+                await loadProduct(slug);
 
-        const amount = Number(product.price);
+            renderProduct(
+                currentProduct
+            );
 
-        if (!Number.isFinite(amount) || amount <= 0) {
-            alert('Giá sản phẩm trong Supabase không hợp lệ.');
-            return;
-        }
+            /*
+             * Order được tạo/reuse trước khi hiện QR.
+             * amount + payment_reference đều lấy từ DB.
+             */
+            currentOrder =
+                await getOrCreateOrder(
+                    currentProduct
+                );
 
-        // Hiển thị tên + giá thật từ Supabase.
-        const productName = document.getElementById('checkoutProductName');
-        const orderProductName = document.getElementById('checkoutOrderProductName');
-        const productPrice = document.getElementById('checkoutProductPrice');
-        const transferAmount = document.getElementById('checkoutTransferAmount');
-        const bankAmount = document.getElementById('bankAmount');
-        const productImage = document.getElementById('checkoutProductImage');
-        const productDescription = document.getElementById('checkoutProductDescription');
-        const checkoutHeaderText = document.getElementById('checkoutHeaderText');
+            renderOrder(
+                currentOrder
+            );
 
-        if (productName) productName.textContent = product.name;
-        if (orderProductName) orderProductName.textContent = product.name;
-        if (productPrice) productPrice.textContent = formatPrice(amount);
-        if (transferAmount) transferAmount.textContent = formatPrice(amount);
-        if (bankAmount) bankAmount.textContent = formatPrice(amount);
+            bindActions();
 
-        if (productDescription) {
-            productDescription.textContent =
-                product.description || 'Plugin dành cho quy trình thiết kế.';
-        }
+            if (
+                currentOrder.status ===
+                "paid"
+            ) {
+                showPaidState();
+            }
 
-        if (checkoutHeaderText) {
-            checkoutHeaderText.textContent =
-                'Hoàn tất chuyển khoản để nhận ' + product.name + '.';
-        }
+        } catch (error) {
+            console.error(
+                "Checkout init error:",
+                error
+            );
 
-        /*
-         * Ảnh sản phẩm:
-         * - Ưu tiên image_url nếu sau này bạn thêm cột này trong products.
-         * - Hiện tại Scene Manager dùng đúng ảnh đang có ở documents.html.
-         */
-        const productImages = {
-            'scene-manager-pro': 'ANH-PLUGIN/PLUGIN-1.jpg',
-            'plugin-architecture-tools': 'ANH-PLUGIN/PLUGIN-1.jpg',
-            'd5-workflow-tools': 'ANH-PLUGIN/PLUGIN-1.jpg'
-        };
-
-        if (productImage) {
-            productImage.src =
-                productImages[product.slug] ||
-                'ANH-PLUGIN/PLUGIN-1.jpg';
-
-            productImage.alt =
-                product.name || 'Plugin';
-        }
-
-        const successText =
-            document.getElementById("checkoutSuccessText");
-
-        const downloadButton =
-            document.getElementById("downloadButton");
-
-        if (successText) {
-            successText.textContent =
-                "Bạn đã có quyền tải " +
-                product.name +
-                " sau khi thanh toán được xác nhận.";
-        }
-
-        // Do not expose download_url before payment in production.
-        // The paid-license flow should enable the final download securely.
-        if (downloadButton) {
-            downloadButton.dataset.productId =
-                product.id;
-            downloadButton.dataset.productSlug =
-                product.slug;
-        }
-
-        // Mã đơn dùng cho nội dung chuyển khoản.
-        const orderCode = createOrderCode();
-        const orderIdElement = document.getElementById('orderId');
-        const transferContent = document.getElementById('transferContent');
-        if (orderIdElement) orderIdElement.textContent = orderCode;
-        if (transferContent) transferContent.textContent = orderCode;
-
-        // VietQR: amount lấy trực tiếp từ products.price.
-        const bankBin = '970422';
-        const accountNumber = '0796594720';
-        const accountName = 'LE CONG MINH VUONG';
-
-        const qrUrl =
-            'https://img.vietqr.io/image/'
-            + bankBin + '-'
-            + accountNumber
-            + '-compact2.png'
-            + '?amount=' + encodeURIComponent(amount)
-            + '&addInfo=' + encodeURIComponent(orderCode)
-            + '&accountName=' + encodeURIComponent(accountName);
-
-        const vietQr = document.getElementById('vietQr');
-        if (vietQr) {
-            vietQr.src = qrUrl;
-            vietQr.alt = 'QR thanh toán ' + product.name;
-        }
-
-        const confirmButton = document.getElementById('confirmButton');
-        const paymentStatus = document.getElementById('paymentStatus');
-
-        if (confirmButton) {
-            confirmButton.addEventListener('click', async function () {
-                const emailInput = document.getElementById('customerEmail');
-                const email = emailInput ? emailInput.value.trim() : '';
-
-                if (!email) {
-                    alert('Vui lòng nhập email để nhận thông tin đơn hàng.');
-                    if (emailInput) emailInput.focus();
-                    return;
-                }
-
-                const { data: { user } = { user: null } } =
-                    await supabaseClient.auth.getUser();
-
-                if (!user) {
-                    alert('Vui lòng đăng nhập trước khi thanh toán.');
-                    return;
-                }
-
-                /*
-                 * CHƯA đánh dấu PAID ở frontend.
-                 *
-                 * Quan trọng: amount bên dưới chỉ là dữ liệu hiển thị.
-                 * Khi triển khai INSERT orders, backend/RPC phải tự đọc
-                 * products.price theo product.id và tự gán orders.amount.
-                 * Không nhận amount từ request của trình duyệt.
-                 */
-
-                if (paymentStatus) paymentStatus.classList.add('show');
-                confirmButton.disabled = true;
-                confirmButton.textContent = 'ĐANG CHỜ XÁC NHẬN...';
-
-                console.log('Checkout ready:', {
-                    user_id: user.id,
-                    product_id: product.id,
-                    product_slug: product.slug,
-                    amount_from_database: amount,
-                    order_code: orderCode,
-                    email
-                });
-            });
+            showFatal(
+                error?.message ||
+                "Không khởi tạo được checkout."
+            );
         }
     }
 
-    document.addEventListener('DOMContentLoaded', initCheckout);
+    document.addEventListener(
+        "DOMContentLoaded",
+        initCheckout
+    );
 })();
 </script>
 </body>
