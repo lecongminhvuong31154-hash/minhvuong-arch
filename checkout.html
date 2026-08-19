@@ -1682,7 +1682,48 @@
             );
 
         if (pending) {
-            return pending;
+            const pendingAmount =
+                Number(pending.amount);
+
+            const currentProductPrice =
+                Number(product.price);
+
+            /*
+             * Nếu giá của pending order cũ KHÔNG còn bằng
+             * products.price hiện tại thì không được reuse.
+             *
+             * Ví dụ:
+             * - order cũ: 70.000
+             * - giá mới trong products: 69.000
+             *
+             * Khi đó xóa pending cũ và tạo order mới
+             * để checkout + QR luôn dùng đúng giá hiện tại.
+             */
+            if (
+                Number.isFinite(pendingAmount) &&
+                Number.isFinite(currentProductPrice) &&
+                pendingAmount === currentProductPrice
+            ) {
+                return pending;
+            }
+
+            console.warn(
+                "Pending order price is outdated. Creating a new order.",
+                {
+                    pending_amount: pendingAmount,
+                    current_product_price: currentProductPrice,
+                    order_id: pending.order_id
+                }
+            );
+
+            /*
+             * Không xóa trực tiếp order từ browser vì hệ thống
+             * đã khóa quyền DELETE trên orders.
+             * Chỉ bỏ qua pending cũ và tạo order mới.
+             *
+             * create_order() phải lấy giá trực tiếp từ
+             * public.products.price ở server.
+             */
         }
 
         return await createOrder(product);
@@ -1726,11 +1767,11 @@
 
         const productImages = {
             "scene-manager-pro":
-                "ANH-PLUGIN/PLUGIN-1.jpg",
+                "ANH-PLUGIN/plugin-1.jpg",
             "material-map-exporter-pro":
                 "ANH-PLUGIN/plugin-2.jpg",
             "mv-component-exporter-pro":
-                "ANH-PLUGIN/PLUGIN-4.jpg"
+                "ANH-PLUGIN/plugin-4.jpg"
         };
 
         if (image) {
@@ -1757,20 +1798,48 @@
 
     function renderOrder(order) {
         const amount = Number(order.amount);
+        const currentPrice =
+            Number(currentProduct?.price);
+
+        /*
+         * Phòng thủ thêm:
+         * nếu order trả về giá không hợp lệ hoặc khác giá
+         * sản phẩm hiện tại, không dùng nó để hiển thị/QR.
+         */
+        const safeAmount =
+            (
+                Number.isFinite(amount) &&
+                amount > 0 &&
+                (
+                    !Number.isFinite(currentPrice) ||
+                    amount === currentPrice
+                )
+            )
+                ? amount
+                : currentPrice;
+
+        if (
+            !Number.isFinite(safeAmount) ||
+            safeAmount <= 0
+        ) {
+            throw new Error(
+                "Số tiền đơn hàng không hợp lệ."
+            );
+        }
 
         setText(
             "checkoutProductPrice",
-            formatPrice(amount)
+            formatPrice(safeAmount)
         );
 
         setText(
             "checkoutTransferAmount",
-            formatPrice(amount)
+            formatPrice(safeAmount)
         );
 
         setText(
             "bankAmount",
-            formatPrice(amount)
+            formatPrice(safeAmount)
         );
 
         setText(
@@ -1798,7 +1867,7 @@
             accountNumber +
             "-compact2.png" +
             "?amount=" +
-            encodeURIComponent(amount) +
+            encodeURIComponent(safeAmount) +
             "&addInfo=" +
             encodeURIComponent(
                 transferDescription
