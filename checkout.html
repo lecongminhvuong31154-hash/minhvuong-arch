@@ -1129,7 +1129,7 @@
 
                     <img
                         id="checkoutProductImage"
-                        src="ANH-PLUGIN/PLUGIN-1.jpg"
+                        src="ANH-PLUGIN/plugin-1.jpg"
                         alt="Plugin"
                     >
 
@@ -1726,15 +1726,17 @@
 
         const productImages = {
             "scene-manager-pro":
-                "ANH-PLUGIN/PLUGIN-1.jpg",
+                "ANH-PLUGIN/plugin-1.jpg",
             "material-map-exporter-pro":
-                "ANH-PLUGIN/PLUGIN-1.jpg"
+                "ANH-PLUGIN/plugin-2.jpg",
+            "mv-component-exporter-pro":
+                "ANH-PLUGIN/PLUGIN-4.jpg"
         };
 
         if (image) {
             image.src =
                 productImages[product.slug] ||
-                "ANH-PLUGIN/PLUGIN-1.jpg";
+                "ANH-PLUGIN/plugin-1.jpg";
 
             image.alt =
                 product.name || "Plugin";
